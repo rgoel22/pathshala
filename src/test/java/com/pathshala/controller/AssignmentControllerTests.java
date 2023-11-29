@@ -38,13 +38,13 @@ public class AssignmentControllerTests {
     @Test
     void testFindAllAssignmentsWhenRecordExists(){
         Mockito.when(assignmentService.findAll()).thenReturn(assignmentDTOList());
-//        Mockito.when(assignmentService.findAll()).thenReturn(new ArrayList<>());
+        //Mockito.when(assignmentService.findAll()).thenReturn(new ArrayList<>());
         ResponseEntity<List<AssignmentDTO>> assignmentListResponse = assignmentController.findAll();
         //check for has body
         Assertions.assertTrue(assignmentListResponse.hasBody());
         Assertions.assertEquals(assignmentListResponse.getStatusCode(), HttpStatus.OK);
         List<AssignmentDTO> assignmentList = assignmentListResponse.getBody();
-        // test for null/not null
+        //test for null/not null
         assert assignmentList != null;
         Assertions.assertEquals(assignmentList.size(), 2);
         Assertions.assertEquals(assignmentList.get(0).getId(), 1L);

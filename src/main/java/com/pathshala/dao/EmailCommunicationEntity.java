@@ -1,14 +1,13 @@
 package com.pathshala.dao;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.Id;
 
 import java.util.Objects;
 
@@ -23,22 +22,11 @@ public class EmailCommunicationEntity extends MetaData {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "parentId")
     private int parentId = -1;
-
-    @Column(name = "receiverEmail")
     private String receiverEmail;
-
-    @Column(name = "senderEmail")
     private String senderEmail;
-
-    @Column(name = "subject")
     private String subject;
-
-    @Column(name = "content")
     private String content;
-
-    @Column(name = "attachment")
     private String attachment;
 
     @Override

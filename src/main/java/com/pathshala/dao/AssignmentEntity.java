@@ -1,11 +1,15 @@
 package com.pathshala.dao;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.Id;
 
 import java.sql.Timestamp;
 import java.util.Objects;
@@ -19,35 +23,27 @@ public class AssignmentEntity extends MetaData {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
-    @Column(name = "name")
     private String name;
-
-    @Column(name = "description")
     private String description;
-
-    @Column(name = "deadline")
     @Temporal(TemporalType.TIMESTAMP)
     private Timestamp deadline;
-
-    @Column(name = "points")
-    private float points;
-
-    @Column(name = "uploadedDocumentPath")
-    private String uploadedDocumentPath;
+    private Float points;
+    private String filePath;
+    private Long topicId;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AssignmentEntity that = (AssignmentEntity) o;
-        return id == that.id && Float.compare(that.points, points) == 0 && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(deadline, that.deadline) && Objects.equals(uploadedDocumentPath, that.uploadedDocumentPath);
+        return Float.compare(points, that.points) == 0 && Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(deadline, that.deadline) && Objects.equals(filePath, that.filePath) && Objects.equals(topicId, that.topicId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, deadline, points, uploadedDocumentPath);
+        return Objects.hash(id, name, description, deadline, points, filePath, topicId);
     }
 
     @Override
@@ -58,7 +54,8 @@ public class AssignmentEntity extends MetaData {
                 ", description='" + description + '\'' +
                 ", deadline=" + deadline +
                 ", points=" + points +
-                ", uploadedDocumentPath='" + uploadedDocumentPath + '\'' +
+                ", filePath='" + filePath + '\'' +
+                ", topicId=" + topicId +
                 '}';
     }
 }

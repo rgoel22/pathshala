@@ -1,57 +1,46 @@
 package com.pathshala.dao;
 
-import jakarta.persistence.Column;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.Id;
 
 import java.util.Objects;
 
-@Entity(name = "Course")
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class CourseEntity extends MetaData {
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    @Column(name = "name")
+    private Long id;
     private String name;
-
-    @Column(name = "topicId")
-    private int topicId;
-
-    // foreign key
-//    @Column(name = "studyMaterialId")
-//    private int studyMaterialId;
-
-    @Column(name = "code")
+    private Long topicId;
     private String code;
-
-    @Column(name = "description")
     private String description;
-
-    @Column(name = "syllabus")
     private String syllabus;
+    private Long userId;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CourseEntity that = (CourseEntity) o;
-        return id == that.id && topicId == that.topicId && Objects.equals(name, that.name) && Objects.equals(code, that.code) && Objects.equals(description, that.description) && Objects.equals(syllabus, that.syllabus);
+        CourseEntity course = (CourseEntity) o;
+        return Objects.equals(id, course.id) && Objects.equals(name, course.name) && Objects.equals(topicId, course.topicId) && Objects.equals(code, course.code) && Objects.equals(description, course.description) && Objects.equals(syllabus, course.syllabus) && Objects.equals(userId, course.userId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, topicId, code, description, syllabus);
+        return Objects.hash(id, name, topicId, code, description, syllabus, userId);
     }
 
     @Override
@@ -63,6 +52,8 @@ public class CourseEntity extends MetaData {
                 ", code='" + code + '\'' +
                 ", description='" + description + '\'' +
                 ", syllabus='" + syllabus + '\'' +
+                ", userId=" + userId +
                 '}';
     }
+
 }

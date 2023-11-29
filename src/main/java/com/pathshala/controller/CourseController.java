@@ -17,6 +17,7 @@ public class CourseController {
     private CourseService courseService;
 
     @GetMapping
+    @CrossOrigin(origins = "http://localhost:8080/")
     public ResponseEntity<List<CourseDTO>> findAll(){
         List<CourseDTO> courseDTOList = courseService.findAll();
         return ResponseEntity.ok().body(courseDTOList);

@@ -1,6 +1,7 @@
 package com.pathshala.dao;
 
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,7 +13,7 @@ import lombok.Setter;
 
 import java.util.Objects;
 
-@Entity
+@Entity(name = "course")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -24,10 +25,11 @@ public class CourseEntity extends MetaData {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private Long topicId;
-    private String code;
+    @Column(name = "coursecode")
+    private String courseCode;
     private String description;
     private String syllabus;
+    @Column(name = "userid")
     private Long userId;
 
     @Override
@@ -35,12 +37,12 @@ public class CourseEntity extends MetaData {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CourseEntity course = (CourseEntity) o;
-        return Objects.equals(id, course.id) && Objects.equals(name, course.name) && Objects.equals(topicId, course.topicId) && Objects.equals(code, course.code) && Objects.equals(description, course.description) && Objects.equals(syllabus, course.syllabus) && Objects.equals(userId, course.userId);
+        return Objects.equals(id, course.id) && Objects.equals(name, course.name) && Objects.equals(courseCode, course.courseCode) && Objects.equals(description, course.description) && Objects.equals(syllabus, course.syllabus) && Objects.equals(userId, course.userId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, topicId, code, description, syllabus, userId);
+        return Objects.hash(id, name, courseCode, description, syllabus, userId);
     }
 
     @Override
@@ -48,8 +50,7 @@ public class CourseEntity extends MetaData {
         return "CourseEntity{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", topicId=" + topicId +
-                ", code='" + code + '\'' +
+                ", courseCode='" + courseCode + '\'' +
                 ", description='" + description + '\'' +
                 ", syllabus='" + syllabus + '\'' +
                 ", userId=" + userId +

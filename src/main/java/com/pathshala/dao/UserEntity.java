@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.Id;
+import jakarta.persistence.Id;
 
 import java.util.Objects;
 
@@ -19,23 +19,11 @@ public class UserEntity extends MetaData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-    @Column(name = "name")
     private String name;
-
-    @Column(name = "email")
     private String email;
-
-    @Column(name = "phoneNumber")
     private String phoneNumber;
-
-    @Column(name = "userType")
     private UserType userType;
-
-    @Column(name = "userId")
     private String userId;
-
-    @Column(name = "password")
     private String password;
 
     @Override

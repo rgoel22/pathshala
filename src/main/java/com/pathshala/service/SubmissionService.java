@@ -29,7 +29,7 @@ public class SubmissionService {
             throw new GenericExceptions(ErrorCodes.MISSING_GRADE, "Missing grade!");
         }
         Optional<SubmissionEntity> savedSubmission = submissionRepository.findById(submissionDTO.getId());
-        if(savedSubmission.isEmpty()){
+        if(!savedSubmission.isPresent()){
             throw new GenericExceptions(ErrorCodes.COURSE_NOT_FOUND, "Submission not found");
         }
         savedSubmission.get().setGradeReceived(submissionDTO.getGradeReceived());

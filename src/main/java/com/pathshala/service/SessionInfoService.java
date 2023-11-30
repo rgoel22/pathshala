@@ -16,7 +16,7 @@ public class SessionInfoService {
 
     public SessionInfoEntity findByUserIdAndIsActive(Long userId){
         Optional<SessionInfoEntity> sessionInfo = sessionInfoRepository.findByUserIdAndIsActiveTrue(userId);
-        if(sessionInfo.isEmpty()){
+        if(!sessionInfo.isPresent()){
             throw new NotFoundException("", "");
         }
         return sessionInfo.get();

@@ -56,7 +56,7 @@ public class CourseService {
 
     private CourseEntity findEntityById(Long id) {
         Optional<CourseEntity> course = courseRepository.findById(id);
-        if (course.isEmpty()){
+        if (!course.isPresent()){
             throw new NotFoundException(ErrorCodes.COURSE_NOT_FOUND, "Course not found!");
         }
         return course.get();

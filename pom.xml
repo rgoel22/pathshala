@@ -14,7 +14,7 @@
     <name>PathShala</name>
     <description>PathShala</description>
     <properties>
-        <java.version>17</java.version>
+        <java.version>8</java.version>
     </properties>
     <dependencies>
         <dependency>
@@ -99,7 +99,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version> <!-- Use the latest version -->
                 <configuration>
-                    <release>17</release> <!-- Set the Java version you are targeting -->
+                    <release>8</release> <!-- Set the Java version you are targeting -->
                 </configuration>
             </plugin>
         </plugins>

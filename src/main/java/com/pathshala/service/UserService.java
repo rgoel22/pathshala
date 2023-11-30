@@ -57,7 +57,7 @@ public class UserService {
     public LoginRequestDTO login(LoginRequestDTO payload){
         String hashedPassword = String.valueOf(Arrays.hashCode(payload.getPassword().toCharArray()));
         Optional<UserEntity> optionalUser = userRepository.findByUserIdAndPassword(payload.getUserId(), hashedPassword);
-        if(optionalUser.isEmpty()){
+        if(!optionalUser.isPresent()){
             throw new GenericExceptions(ErrorCodes.INCORRECT_CREDENTIALS, "Incorrect credentials!");
         }
         UserEntity user = optionalUser.get();

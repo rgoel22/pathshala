@@ -7,6 +7,7 @@ import com.pathshala.exception.ErrorCodes;
 import com.pathshala.exception.NotFoundException;
 import com.pathshala.repository.CourseRepository;
 import com.pathshala.exception.GenericExceptions;
+import com.pathshala.repository.UserCourseMappingRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 public class CourseService {
 
     private CourseRepository courseRepository;
+    private UserCourseMappingRepository userCourseMappingRepository;
     private ModelMapper modelMapper;
     public List<CourseDTO> findAll(){
         List<CourseEntity> courseEntities = courseRepository.findAll();
@@ -45,7 +47,7 @@ public class CourseService {
 
     public String enrollUserInCourse(String userId, Long courseId){
         Optional<UserCourseMappingEntity> optionalUserCourseMapping =
-                courseRepository.findByUserIdAndCourseId(userId, courseId);
+                userCourseMappingRepository.findByUserIdAndCourseId(userId, courseId);
         if(optionalUserCourseMapping.isPresent()){
             throw new GenericExceptions(ErrorCodes.USER_COURSE_PRESENT, "User already enrolled in Course");
         }

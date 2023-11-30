@@ -50,6 +50,27 @@ public class AssignmentControllerTests {
         Assertions.assertEquals(assignmentList.get(0).getId(), 1L);
     }
 
+    @Test
+    void testFindAllAssignmentsWhenRecordDoesNotExists(){
+        // Mocking the behavior of the assignmentService.findAll() when no records exist
+        Mockito.when(assignmentService.findAll()).thenReturn(new ArrayList<>());
+
+        // Invoking the controller method
+        ResponseEntity<List<AssignmentDTO>> assignmentListResponse = assignmentController.findAll();
+
+        // Asserting the response
+        Assertions.assertTrue(assignmentListResponse.hasBody());
+        Assertions.assertEquals(assignmentListResponse.getStatusCode(), HttpStatus.OK);
+
+        // Checking that the returned list is empty
+        List<AssignmentDTO> assignmentList = assignmentListResponse.getBody();
+        // Check that the returned list is not null
+        Assertions.assertNotNull(assignmentList);
+        Assertions.assertTrue(assignmentList.isEmpty());
+
+
+    }
+
 
     private List<AssignmentDTO> assignmentDTOList(){
         // Create a random Date object

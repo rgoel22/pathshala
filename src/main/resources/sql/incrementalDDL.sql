@@ -223,6 +223,7 @@ CREATE TABLE `userCourseMapping` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+DROP TABLE IF EXISTS `sessionInfo`;
 CREATE TABLE `sessionInfo` (
  `id` INT NOT NULL AUTO_INCREMENT,
  `userID` INT NOT NULL,
@@ -231,6 +232,11 @@ CREATE TABLE `sessionInfo` (
  `modifiedOn` DATETIME NULL DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
  `isActive` TINYINT(1) NULL DEFAULT 1,
  PRIMARY KEY (`id`));
+
+ALTER TABLE `pathshala`.`userCourseMapping`
+    ADD COLUMN `Id` INT NOT NULL AUTO_INCREMENT AFTER `courseId`,
+    ADD PRIMARY KEY (`Id`);
+;
 
 --
 -- Dumping data for table `userCourseMapping`

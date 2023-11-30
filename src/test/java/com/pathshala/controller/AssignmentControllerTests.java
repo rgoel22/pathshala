@@ -1,6 +1,7 @@
 package com.pathshala.controller;
 
 import com.pathshala.dto.AssignmentDTO;
+import com.pathshala.enums.UserType;
 import com.pathshala.service.AssignmentService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -79,8 +80,8 @@ public class AssignmentControllerTests {
         Timestamp timestamp = new Timestamp(date.getTime());
 
         List<AssignmentDTO> res = new ArrayList<>();
-        //res.add(new AssignmentDTO(1L, "Test1", "Test11", timestamp , 100.00f , "/testFilePath1", 1L));
-        //res.add(new AssignmentDTO(2L, "Test2", "Test22", timestamp , 200.00f , "/testFilePath2", 1L));
+        res.add(new AssignmentDTO(1L, "Test1", "Test11", timestamp , 100.00f , "/testFilePath1", 1L,"test1", UserType.ADMIN));
+        res.add(new AssignmentDTO(2L, "Test2", "Test22", timestamp , 200.00f , "/testFilePath2", 1L, "test1", UserType.ADMIN));
         return res;
     }
 

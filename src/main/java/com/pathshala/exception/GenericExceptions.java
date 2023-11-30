@@ -1,6 +1,5 @@
-package com.pathshala.repository;
+package com.pathshala.exception;
 
-import com.pathshala.exception.BaseRuntimeException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 

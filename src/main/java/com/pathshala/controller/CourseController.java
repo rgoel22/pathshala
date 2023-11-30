@@ -35,4 +35,10 @@ public class CourseController {
         return ResponseEntity.ok().body(courseDTO);
     }
 
+    @GetMapping("/{userId}/{courseId}")
+    public ResponseEntity<String> enrollUserInCourse(@PathVariable @NotNull String userId, @PathVariable @NotNull Long courseId){
+        String response = courseService.enrollUserInCourse(userId, courseId);
+        return ResponseEntity.ok().body(response);
+    }
+
 }

@@ -1,10 +1,12 @@
 package com.pathshala.service;
 
 import com.pathshala.dao.CourseEntity;
+import com.pathshala.dao.UserCourseMappingEntity;
 import com.pathshala.dto.CourseDTO;
 import com.pathshala.exception.ErrorCodes;
 import com.pathshala.exception.NotFoundException;
 import com.pathshala.repository.CourseRepository;
+import com.pathshala.exception.GenericExceptions;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -39,6 +41,15 @@ public class CourseService {
     public CourseDTO findById(Long id) {
         CourseEntity course = this.findEntityById(id);
         return modelMapper.map(course, CourseDTO.class);
+    }
+
+    public String enrollUserInCourse(String userId, Long courseId){
+        Optional<UserCourseMappingEntity> optionalUserCourseMapping =
+                courseRepository.findByUserIdAndCourseId(userId, courseId);
+        if(optionalUserCourseMapping.isPresent()){
+            throw new GenericExceptions(ErrorCodes.USER_COURSE_PRESENT, "User already enrolled in Course");
+        }
+        return "Successfully enrolled";
     }
 
     private CourseEntity findEntityById(Long id) {

@@ -5,7 +5,7 @@ import com.pathshala.dto.LoginRequestDTO;
 import com.pathshala.dto.UserDTO;
 import com.pathshala.exception.ErrorCodes;
 import com.pathshala.exception.RecordExistsException;
-import com.pathshala.repository.GenericExceptions;
+import com.pathshala.exception.GenericExceptions;
 import com.pathshala.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;

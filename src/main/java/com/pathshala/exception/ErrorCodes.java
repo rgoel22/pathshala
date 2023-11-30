@@ -2,6 +2,8 @@ package com.pathshala.exception;
 
 public class ErrorCodes {
     public static final String COURSE_NOT_FOUND = "course_not_found";
+
+    public static final String USER_COURSE_PRESENT = "user_course_present";
     public static final String ASSIGNMENT_NOT_FOUND = "assignment_not_found";
     public static final String USER_ALREADY_PRESENT = "user_already_present";
     public static final String PASSWORD_MISMATCH = "password_mismatch";

@@ -20,9 +20,10 @@ public class SubmissionEntity extends MetaData {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    private String name;
-    private String uploadedDocumentPath;
+    private Long id;
+    private int userId;
+    private int assignmentId;
+    private String filePath;
     private float gradeReceived;
 
     @Override
@@ -30,20 +31,21 @@ public class SubmissionEntity extends MetaData {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SubmissionEntity that = (SubmissionEntity) o;
-        return id == that.id && Float.compare(that.gradeReceived, gradeReceived) == 0 && Objects.equals(name, that.name) && Objects.equals(uploadedDocumentPath, that.uploadedDocumentPath);
+        return id == that.id && userId == that.userId && assignmentId == that.assignmentId && Float.compare(that.gradeReceived, gradeReceived) == 0 && Objects.equals(filePath, that.filePath);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, uploadedDocumentPath, gradeReceived);
+        return Objects.hash(id, userId, assignmentId, filePath, gradeReceived);
     }
 
     @Override
     public String toString() {
         return "SubmissionEntity{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
-                ", uploadedDocumentPath='" + uploadedDocumentPath + '\'' +
+                ", userId=" + userId +
+                ", assignmentId=" + assignmentId +
+                ", filePath='" + filePath + '\'' +
                 ", gradeReceived=" + gradeReceived +
                 '}';
     }

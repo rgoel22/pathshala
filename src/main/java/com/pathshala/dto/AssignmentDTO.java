@@ -1,5 +1,6 @@
 package com.pathshala.dto;
 
+import com.pathshala.enums.UserType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,4 +24,6 @@ public class AssignmentDTO {
     private Float points;
     private String filePath;
     private Long topicId;
+    private String userId;
+    private UserType userType;
 }

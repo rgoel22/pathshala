@@ -1,0 +1,25 @@
+package com.pathshala.repository;
+
+import com.pathshala.dao.SessionInfoEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
+
+@Repository
+public interface SessionInfoRepository extends JpaRepository<SessionInfoEntity, Long> {
+
+    Optional<SessionInfoEntity> findByUserIdAndIsActiveTrue(Long userId);
+
+    @Query(value = "update sessionInfo set isActive = '0' where createdOn <= now() - interval 1 hour and isActive = '1'"
+            ,nativeQuery = true)
+    @Modifying
+    int expireToken();
+
+    @Modifying
+    @Query(value = "update sessioninfo set isActive = '0' where userId = :userId", nativeQuery = true)
+    int expireSessionByUserId(@Param("userId") Long userId);
+}

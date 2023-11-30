@@ -3,10 +3,12 @@ package com.pathshala.service;
 import com.pathshala.dao.UserEntity;
 import com.pathshala.dto.LoginRequestDTO;
 import com.pathshala.dto.UserDTO;
+import com.pathshala.exception.BaseRuntimeException;
 import com.pathshala.exception.ErrorCodes;
-import com.pathshala.exception.RecordExistsException;
 import com.pathshala.exception.GenericExceptions;
+import com.pathshala.exception.RecordExistsException;
 import com.pathshala.repository.UserRepository;
+import com.pathshala.security.TokenService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -20,7 +22,8 @@ import java.util.Optional;
 public class UserService {
 
     private UserRepository userRepository;
-
+    private TokenService tokenService;
+    private SessionInfoService sessionInfoService;
     private final ModelMapper modelMapper;
 
     public Boolean saveUserData(UserDTO userDTO) {
@@ -51,16 +54,23 @@ public class UserService {
         return true;
     }
 
-    public LoginRequestDTO login(String userId, String password){
-        LoginRequestDTO loginInfo = new LoginRequestDTO();
-        String hashedPassword = String.valueOf(Arrays.hashCode(password.toCharArray()));
-        Optional<UserEntity> optionalUser = userRepository.findByUserIdAndPassword(userId, hashedPassword);
+    public LoginRequestDTO login(LoginRequestDTO payload){
+        String hashedPassword = String.valueOf(Arrays.hashCode(payload.getPassword().toCharArray()));
+        Optional<UserEntity> optionalUser = userRepository.findByUserIdAndPassword(payload.getUserId(), hashedPassword);
         if(optionalUser.isEmpty()){
             throw new GenericExceptions(ErrorCodes.INCORRECT_CREDENTIALS, "Incorrect credentials!");
         }
-        loginInfo.setUserId(userId);
-        loginInfo.setPassword(password);
-        loginInfo.setUserIdType(optionalUser.get().getUserId());
-        return loginInfo;
+        UserEntity user = optionalUser.get();
+        String token = tokenService.createToken(user.getId(), user.getUserType().toString());
+        if (sessionInfoService.createSession(user.getId(), token)){
+            return LoginRequestDTO.builder().userId(user.getId().toString())
+                    .userType(user.getUserType().toString())
+                    .token(token).build();
+        }
+        throw new BaseRuntimeException("","");
+    }
+
+    public Boolean logout(Long userId) {
+        return sessionInfoService.expireSessionForUserId(userId);
     }
 }

@@ -20,7 +20,6 @@ import java.util.Objects;
 @AllArgsConstructor
 public class CourseEntity extends MetaData {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

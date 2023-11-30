@@ -1,7 +1,7 @@
 package com.pathshala.controller;
 
 import com.pathshala.dto.CourseDTO;
-import com.pathshala.security.Token;
+import com.pathshala.security.TokenService;
 import com.pathshala.service.CourseService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,10 +21,9 @@ import java.util.List;
 @AllArgsConstructor
 public class CourseController {
     private CourseService courseService;
-    private Token token;
+    private TokenService token;
     @GetMapping
     public ResponseEntity<List<CourseDTO>> findAll(){
-        token.createToken("aashrut","student");
         List<CourseDTO> courseDTOList = courseService.findAll();
         return ResponseEntity.ok().body(courseDTOList);
     }

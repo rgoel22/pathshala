@@ -10,6 +10,6 @@ public class ErrorCodes {
 
     public static final String DATA_NOT_SAVED = "data_not_saved";
     public static final String MISSING_EMAIL = "missing_email";
-
+    public static final String MISSING_GRADE = "missing_grade";
     public static final String INCORRECT_CREDENTIALS = "incorrect_credentials";
 }

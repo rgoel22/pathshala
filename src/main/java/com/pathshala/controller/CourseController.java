@@ -1,10 +1,16 @@
 package com.pathshala.controller;
 
 import com.pathshala.dto.CourseDTO;
+import com.pathshala.security.Token;
 import com.pathshala.service.CourseService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -15,16 +21,17 @@ import java.util.List;
 @AllArgsConstructor
 public class CourseController {
     private CourseService courseService;
-
+    private Token token;
     @GetMapping
-    @CrossOrigin(origins = "http://localhost:8080/")
     public ResponseEntity<List<CourseDTO>> findAll(){
+        token.createToken("aashrut","student");
         List<CourseDTO> courseDTOList = courseService.findAll();
         return ResponseEntity.ok().body(courseDTOList);
     }
 
     @PostMapping
     public ResponseEntity<CourseDTO> saveOrUpdate(@RequestBody @Valid CourseDTO course) {
+
         CourseDTO savedCourse = courseService.saveOrUpdate(course);
         return ResponseEntity.ok().body(savedCourse);
     }

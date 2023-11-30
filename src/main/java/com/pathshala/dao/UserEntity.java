@@ -18,7 +18,7 @@ import java.util.Objects;
 public class UserEntity extends MetaData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     private String name;
     private String email;
     private String phoneNumber;

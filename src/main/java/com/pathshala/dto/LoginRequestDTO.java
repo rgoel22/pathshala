@@ -12,6 +12,6 @@ public class LoginRequestDTO {
 
     private String userId;
     private String password;
-
-    private String userIdType;
+    private String token;
+    private String userType;
 }

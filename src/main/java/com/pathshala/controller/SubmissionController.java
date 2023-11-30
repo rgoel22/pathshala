@@ -24,7 +24,7 @@ public class SubmissionController {
         return ResponseEntity.ok().body(submissionResponse);
     }
 
-    @PostMapping
+    @PostMapping("/updateGrade")
     public ResponseEntity<SubmissionDTO> updateSubmissionGrade(@RequestBody @Valid SubmissionDTO submissionDTO){
         SubmissionDTO submissionResponse = submissionService.updateGrade(submissionDTO);
         return ResponseEntity.ok().body(submissionResponse);

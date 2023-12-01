@@ -1,12 +1,12 @@
 package com.pathshala.dao;
 
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.sql.Timestamp;
 
 @Getter

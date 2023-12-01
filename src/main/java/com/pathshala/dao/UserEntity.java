@@ -1,21 +1,20 @@
 package com.pathshala.dao;
 
 import com.pathshala.enums.UserType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import java.util.Objects;
 
-@Entity(name = "User")
+@Entity(name = "user")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -24,18 +23,18 @@ public class UserEntity extends MetaData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name="firstname")
+    //@Column(name="firstname")
     private String firstName;
-    @Column(name="lastname")
+    //@Column(name="lastname")
     private String lastName;
-    @Column(name = "emailid")
+    //@Column(name = "emailid")
     private String emailId;
-    @Column(name = "phonenumber")
+    //@Column(name = "phonenumber")
     private String phoneNumber;
-    @Column(name="usertype")
+    //@Column(name="usertype")
     @Enumerated(EnumType.STRING)
     private UserType userType;
-    @Column(name = "userid")
+    //@Column(name = "userid")
     private String userId;
     private String password;
 

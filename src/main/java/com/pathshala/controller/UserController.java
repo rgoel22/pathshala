@@ -39,4 +39,9 @@ public class UserController {
         Boolean isLoggedOut = userService.logout(userId);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/home")
+    public ResponseEntity<String> hello(){
+        return ResponseEntity.ok().body("Hello");
+    }
 }

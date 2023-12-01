@@ -2,16 +2,16 @@ package com.pathshala.security;
 
 import com.pathshala.exception.BaseRuntimeException;
 import com.pathshala.exception.UnauthorizedAccessException;
-import jakarta.servlet.Filter;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
 import lombok.AllArgsConstructor;
 import org.apache.catalina.connector.RequestFacade;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import java.io.IOException;
 import java.util.stream.Collectors;
 

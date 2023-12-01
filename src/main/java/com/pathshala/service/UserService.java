@@ -9,11 +9,13 @@ import com.pathshala.exception.GenericExceptions;
 import com.pathshala.exception.RecordExistsException;
 import com.pathshala.repository.UserRepository;
 import com.pathshala.security.TokenService;
+import com.pathshala.util.EncryptionUtility;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -34,28 +36,28 @@ public class UserService {
             throw new RecordExistsException(ErrorCodes.USER_ALREADY_PRESENT, "UserId not available!");
         }
         // check if passwords match
-        if(userDTO.getPassword().equals(userDTO.getRePassword())){
+        if(!userDTO.getPassword().equals(userDTO.getRePassword())){
             throw new GenericExceptions(ErrorCodes.PASSWORD_MISMATCH, "Passwords do not Match");
         }
         //emailId should not be empty
-        if(Objects.isNull(userDTO.getEmail())){
+        if(Objects.isNull(userDTO.getEmailId())){
             throw new GenericExceptions(ErrorCodes.MISSING_EMAIL, "Email is required.");
         }
         // encrypt the password using hashing
-        String hashedPassword = String.valueOf(Arrays.hashCode(userDTO.getPassword().toCharArray()));
-        userDTO.setPassword(hashedPassword);
-        //map object to database entity
-        modelMapper.map(userDTO, user);
         try{
+            String hashedPassword = EncryptionUtility.makeSHA1Hash(userDTO.getPassword());
+            userDTO.setPassword(hashedPassword);
+            modelMapper.map(userDTO, user);
             userRepository.save(user);
         } catch (Exception e){
             throw new GenericExceptions(ErrorCodes.DATA_NOT_SAVED, "User data not saved. Please try again!");
         }
+        //map object to database entity
         return true;
     }
 
-    public LoginRequestDTO login(LoginRequestDTO payload){
-        String hashedPassword = String.valueOf(Arrays.hashCode(payload.getPassword().toCharArray()));
+    public LoginRequestDTO login(LoginRequestDTO payload) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+        String hashedPassword = EncryptionUtility.makeSHA1Hash(payload.getPassword());
         Optional<UserEntity> optionalUser = userRepository.findByUserIdAndPassword(payload.getUserId(), hashedPassword);
         if(!optionalUser.isPresent()){
             throw new GenericExceptions(ErrorCodes.INCORRECT_CREDENTIALS, "Incorrect credentials!");

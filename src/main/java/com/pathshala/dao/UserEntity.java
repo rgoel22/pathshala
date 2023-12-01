@@ -19,10 +19,18 @@ public class UserEntity extends MetaData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private String email;
+    @Column(name="firstname")
+    private String firstName;
+    @Column(name="lastname")
+    private String lastName;
+    @Column(name = "emailid")
+    private String emailId;
+    @Column(name = "phonenumber")
     private String phoneNumber;
+    @Column(name="usertype")
+    @Enumerated(EnumType.STRING)
     private UserType userType;
+    @Column(name = "userid")
     private String userId;
     private String password;
 
@@ -31,20 +39,21 @@ public class UserEntity extends MetaData {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserEntity that = (UserEntity) o;
-        return id == that.id && Objects.equals(name, that.name) && Objects.equals(email, that.email) && Objects.equals(phoneNumber, that.phoneNumber) && userType == that.userType && Objects.equals(userId, that.userId) && Objects.equals(password, that.password);
+        return Objects.equals(id, that.id) && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && Objects.equals(emailId, that.emailId) && Objects.equals(phoneNumber, that.phoneNumber) && userType == that.userType && Objects.equals(userId, that.userId) && Objects.equals(password, that.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, email, phoneNumber, userType, userId, password);
+        return Objects.hash(id, firstName, lastName, emailId, phoneNumber, userType, userId, password);
     }
 
     @Override
     public String toString() {
         return "UserEntity{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", emailId='" + emailId + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", userType=" + userType +
                 ", userId='" + userId + '\'' +

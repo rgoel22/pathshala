@@ -10,9 +10,9 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDTO {
-
-    private String name;
-    private String email;
+    private String firstName;
+    private String lastName;
+    private String emailId;
     private String phoneNumber;
     private UserType userType;
     private String userId;

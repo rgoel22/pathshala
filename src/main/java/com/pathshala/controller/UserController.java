@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 
 @RestController
 @RequestMapping("/user")
@@ -21,9 +23,9 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody @Valid LoginRequestDTO loginRequestDTO) {
+    public ResponseEntity<LoginRequestDTO> login(@RequestBody @Valid LoginRequestDTO loginRequestDTO) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         LoginRequestDTO loggedInUser = userService.login(loginRequestDTO);
-        return ResponseEntity.ok().body(loggedInUser.getUserId());
+        return ResponseEntity.ok().body(loggedInUser);
     }
 
     @PostMapping("/signUp")

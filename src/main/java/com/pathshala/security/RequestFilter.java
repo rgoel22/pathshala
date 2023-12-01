@@ -8,6 +8,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import lombok.AllArgsConstructor;
+import org.apache.catalina.connector.RequestFacade;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
@@ -22,16 +23,21 @@ public class RequestFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws ServletException, IOException, BaseRuntimeException {
+        String url = ((RequestFacade) request).getRequestURL().toString();
         tokenService.expireToken();
-        String payload = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-        JSONObject jsonObject = new JSONObject(payload);
-        Long userId = jsonObject.optLongObject("userId", 0L);
-        String token = jsonObject.optString("token", "");
-        String userType = jsonObject.optString("userType", "");
-        if (true || tokenService.validateToken(userId, token, userType)) {
+        if( !url.contains("login") && !url.contains("signUp")){
+            String payload = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+            JSONObject jsonObject = new JSONObject(payload);
+            Long userId = jsonObject.optLongObject("userId", 0L);
+            String token = jsonObject.optString("token", "");
+            String userType = jsonObject.optString("userType", "");
+            if (true || (tokenService.validateToken(userId, token, userType))) {
+                filterChain.doFilter(request, response);
+            } else {
+                throw new UnauthorizedAccessException("", "");
+            }
+        } else{
             filterChain.doFilter(request, response);
-        } else {
-            throw new UnauthorizedAccessException("", "");
         }
     }
 

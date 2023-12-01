@@ -25,5 +25,6 @@ public class SessionInfoEntity extends MetaData{
     private Long userId;
     @Column(name = "sessiontoken")
     private String sessionToken;
+    @Column(name = "isactive")
     private Boolean isActive;
 }

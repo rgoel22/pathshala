@@ -94,14 +94,6 @@
                     </excludes>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version> <!-- Use the latest version -->
-                <configuration>
-                    <release>8</release> <!-- Set the Java version you are targeting -->
-                </configuration>
-            </plugin>
         </plugins>
     </build>
 

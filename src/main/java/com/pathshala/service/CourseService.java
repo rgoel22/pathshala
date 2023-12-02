@@ -46,11 +46,15 @@ public class CourseService {
     }
 
     public String enrollUserInCourse(String userId, Long courseId){
+        UserCourseMappingEntity userCourseMappingEntity = new UserCourseMappingEntity();
         Optional<UserCourseMappingEntity> optionalUserCourseMapping =
                 userCourseMappingRepository.findByUserIdAndCourseId(userId, courseId);
         if(optionalUserCourseMapping.isPresent()){
             throw new GenericExceptions(ErrorCodes.USER_COURSE_PRESENT, "User already enrolled in Course");
         }
+        userCourseMappingEntity.setCourseId(courseId);
+        userCourseMappingEntity.setUserId(userId);
+        userCourseMappingRepository.save(userCourseMappingEntity);
         return "Successfully enrolled";
     }
 

@@ -19,6 +19,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @ExtendWith(MockitoExtension.class)
 @Disabled
@@ -74,6 +75,106 @@ public class AssignmentControllerTests {
 
     }
 
+    @Test
+    void testSaveAssignment() {
+        String assignmentName = "Test1";
+        // Create a sample AssignmentDTO for testing
+        Mockito.when(assignmentService.saveOrUpdate(Mockito.any())).thenReturn(createTempAssignment(assignmentName));
+        ResponseEntity<AssignmentDTO> testResponse = assignmentController.saveOrUpdate(createTempAssignment(assignmentName));
+        Assertions.assertTrue(testResponse.hasBody());
+        Assertions.assertEquals(testResponse.getStatusCode(), HttpStatus.OK);
+        Assertions.assertEquals(Objects.requireNonNull(testResponse.getBody()).getName(), assignmentName);
+
+    }
+
+    @Test
+    void testUpdateAssignment(){
+        String assignmentName = "Test1";
+        //save the assignment and test if its saved
+        Mockito.when(assignmentService.saveOrUpdate(Mockito.any())).thenReturn(createTempAssignment(assignmentName));
+        ResponseEntity<AssignmentDTO> testResponse = assignmentController.saveOrUpdate(createTempAssignment(assignmentName));
+        Assertions.assertTrue(testResponse.hasBody());
+        Assertions.assertEquals(testResponse.getStatusCode(), HttpStatus.OK);
+        Assertions.assertEquals(Objects.requireNonNull(testResponse.getBody()).getName(), assignmentName);
+
+        //update the same object with different name
+        String updatedAssignmentName = "Test11";
+        Mockito.when(assignmentService.saveOrUpdate(Mockito.any())).thenReturn(createTempAssignment(updatedAssignmentName));
+        ResponseEntity<AssignmentDTO> newTestResponse = assignmentController.saveOrUpdate(createTempAssignment(updatedAssignmentName));
+        Assertions.assertTrue(newTestResponse.hasBody());
+        Assertions.assertEquals(newTestResponse.getStatusCode(), HttpStatus.OK);
+        Assertions.assertEquals(Objects.requireNonNull(newTestResponse.getBody()).getName(), updatedAssignmentName);
+    }
+
+    @Test
+    void testFindAssignmentByIdWhenRecordExists() {
+        Long assignmentId = 1L;
+        Mockito.when(assignmentService.findById(assignmentId)).thenReturn(createTempAssignmentID(assignmentId));
+        ResponseEntity<AssignmentDTO> assignmentResponse = assignmentController.findById(assignmentId);
+
+
+        // Invoking the controller method
+
+        // Asserting the response
+        Assertions.assertTrue(assignmentResponse.hasBody());
+        Assertions.assertEquals(assignmentResponse.getStatusCode(), HttpStatus.OK);
+
+        // Checking that the returned AssignmentDTO matches the expected one
+        AssignmentDTO assignmentList = assignmentResponse.getBody();
+        assert assignmentList != null;
+        Assertions.assertEquals(assignmentList.getId(), 1L);
+        Assertions.assertEquals(assignmentList.getName(), "Test1");
+        Assertions.assertEquals(assignmentList.getDescription(),"Description1");
+        // Add more assertions for other fields if needed
+    }
+
+    @Test
+    void testFindAssignmentByIdWhenRecordDoesNotExist() {
+        // Mocking the behavior of the assignmentService.findById() when no record exists
+        Long assignmentId = 2L;
+        Mockito.when(assignmentService.findById(assignmentId)).thenReturn(null);
+
+        // Invoking the controller method
+        ResponseEntity<AssignmentDTO> assignmentResponse = assignmentController.findById(assignmentId);
+
+        // Asserting the response
+        Assertions.assertFalse(assignmentResponse.hasBody());
+        Assertions.assertEquals(assignmentResponse.getStatusCode(), HttpStatus.OK);
+    }
+
+    @Test
+    void testFindByTopicIdWhenRecordExists() {
+        // Mocking the behavior of the assignmentService.findByTopicId() when a record exists
+        Mockito.when(assignmentService.findByTopicId(Mockito.anyLong())).thenReturn(createTempTopicID(Mockito.anyLong()));
+
+        // Invoking the controller method
+        ResponseEntity<AssignmentDTO> assignmentResponse = assignmentController.findByTopicId(1L);
+
+        // Asserting the response
+        Assertions.assertTrue(assignmentResponse.hasBody());
+        Assertions.assertEquals(assignmentResponse.getStatusCode(), HttpStatus.OK);
+
+        // Checking that the returned AssignmentDTO matches the expected one
+        AssignmentDTO assignmentList = assignmentResponse.getBody();
+        assert assignmentList != null;
+        Assertions.assertEquals(assignmentList.getTopicId(), 1L);
+        Assertions.assertEquals(assignmentList.getName(), "Test1");
+        Assertions.assertEquals(assignmentList.getDescription(),"Description1");
+    }
+    @Test
+    void testFindByTopicIdWhenRecordDoesNotExist() {
+        // Mocking the behavior of the assignmentService.findByTopicId() when no record exists
+        Long topicId = 2L;
+        Mockito.when(assignmentService.findByTopicId(topicId)).thenReturn(null);
+
+        // Invoking the controller method
+        ResponseEntity<AssignmentDTO> assignmentResponse = assignmentController.findByTopicId(topicId);
+
+        // Asserting the response
+        Assertions.assertFalse(assignmentResponse.hasBody());
+        Assertions.assertEquals(assignmentResponse.getStatusCode(), HttpStatus.OK);
+    }
+
 
     private List<AssignmentDTO> assignmentDTOList(){
         // Create a random Date object
@@ -85,6 +186,29 @@ public class AssignmentControllerTests {
         res.add(new AssignmentDTO(1L, "Test1", "Test11", timestamp , 100.00f , "/testFilePath1", 1L,"test1", UserType.ADMIN));
         res.add(new AssignmentDTO(2L, "Test2", "Test22", timestamp , 200.00f , "/testFilePath2", 1L, "test1", UserType.ADMIN));
         return res;
+    }
+
+    private AssignmentDTO createTempAssignment(String name) {
+        // Create a random Date object
+        Date date = new Date();
+        // Create a Timestamp object from the Date object
+        Timestamp timestamp = new Timestamp(date.getTime());
+        return new AssignmentDTO(1L, name, "Description1", timestamp, 100f, "/testFilePath1", 1L, "test1", UserType.ADMIN);
+    }
+
+    private AssignmentDTO createTempAssignmentID(Long id){
+        //create a random Date object
+        Date date = new Date();
+        //Create a Timestamp object from the Date object
+        Timestamp timestamp = new Timestamp(date.getTime());
+        return new AssignmentDTO(id, "Test1", "Description1", timestamp, 100f, "/testFilePath1", 1L, "test1", UserType.ADMIN);
+    }
+    private AssignmentDTO createTempTopicID(Long topicId){
+        //create a random Date object
+        Date date = new Date();
+        //Create a Timestamp object from the Date object
+        Timestamp timestamp = new Timestamp(date.getTime());
+        return new AssignmentDTO(topicId, "Test1", "Description1", timestamp, 100f, "/testFilePath1", 1L, "test1", UserType.ADMIN);
     }
 
 }

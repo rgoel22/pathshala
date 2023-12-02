@@ -1,5 +1,6 @@
 package com.pathshala.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.pathshala.enums.UserType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,6 +17,7 @@ import java.sql.Timestamp;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class AssignmentDTO {
     private Long id;
     private String name;

@@ -22,6 +22,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -122,4 +123,17 @@ public class UserService {
         return user.get();
     }
 
+    public List<UserDTO> getInstructor() {
+        List<UserEntity> instructors = userRepository.findAllByUserType(UserType.INSTRUCTOR);
+        List<UserDTO> instructorDto = instructors.stream().map(instructor -> modelMapper.map(instructor, UserDTO.class))
+                .collect(Collectors.toList());
+        for (UserDTO instructor: instructorDto) {
+            instructor.setPassword(null);
+            instructor.setCourses(null);
+            instructor.setEmailId(null);
+            instructor.setPhoneNumber(null);
+            instructor.setUserId(null);
+        }
+        return instructorDto;
+    }
 }

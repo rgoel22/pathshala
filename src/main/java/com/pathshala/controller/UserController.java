@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -37,9 +38,15 @@ public class UserController {
     }
 
     @GetMapping("/logout")
-    public ResponseEntity<Boolean> logout(@RequestParam(required = true) Long userId) {
+    public ResponseEntity<Boolean> logout(@RequestParam Long userId) {
         Boolean isLoggedOut = userService.logout(userId);
         return ResponseEntity.ok().body(isLoggedOut);
     }
 
+    @GetMapping("/getInstructor")
+    public ResponseEntity<List<UserDTO>> getInstructor(){
+        List<UserDTO> instructors = userService.getInstructor();
+        return ResponseEntity.ok().body(instructors);
+    }
 }
+

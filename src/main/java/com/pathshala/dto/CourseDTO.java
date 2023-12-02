@@ -1,5 +1,6 @@
 package com.pathshala.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.pathshala.enums.UserType;
 import lombok.AllArgsConstructor;
@@ -18,6 +19,7 @@ import javax.validation.constraints.NotNull;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class CourseDTO {
     private Long id;
     @NotNull

@@ -1,7 +1,13 @@
 package com.pathshala.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.pathshala.enums.UserType;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
@@ -11,6 +17,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDTO {
     private String firstName;
     private String lastName;

@@ -2,16 +2,17 @@ package com.pathshala.security;
 
 import com.pathshala.exception.BaseRuntimeException;
 import com.pathshala.exception.UnauthorizedAccessException;
-import lombok.AllArgsConstructor;
-import org.apache.catalina.connector.RequestFacade;
-import org.json.JSONObject;
-import org.springframework.stereotype.Component;
-
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.AllArgsConstructor;
+import org.apache.catalina.connector.RequestFacade;
+import org.json.JSONObject;
+import org.springframework.stereotype.Component;
+
 import java.io.IOException;
 import java.util.stream.Collectors;
 
@@ -23,13 +24,17 @@ public class RequestFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws ServletException, IOException, BaseRuntimeException {
-        if(((RequestFacade) request).getMethod().equalsIgnoreCase("OPTIONS")){
-            response.setContentType("text/plain");
-            response.setCharacterEncoding("UTF-8");
-            response.getWriter().write("OK");
-            response.getWriter().flush();
-            response.getWriter().close();
-        } else{
+//        if(((RequestFacade) request).getMethod().equalsIgnoreCase("OPTIONS")){
+//            response.setContentType("text/plain");
+//            response.setCharacterEncoding("UTF-8");
+//            response.getWriter().write("OK");
+//            response.setHeader("Access-Control-Allow-Origin", "*");
+//            response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+//            response.setHeader("Access-Control-Allow-Headers", "Origin, Accept, Content-Type, Authorization");
+//            response.getWriter().flush();
+//            response.getWriter().close();
+//
+//        } else{
             String url = ((RequestFacade) request).getRequestURL().toString();
             tokenService.expireToken();
             if( !url.contains("login") && !url.contains("signUp")){
@@ -44,9 +49,13 @@ public class RequestFilter implements Filter {
                     throw new UnauthorizedAccessException("Hello", "Hello");
                 }
             } else{
-                filterChain.doFilter(request, response);
+                HttpServletResponse httpServletResponse = (HttpServletResponse) response;
+                httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
+                httpServletResponse.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+                httpServletResponse.setHeader("Access-Control-Allow-Headers", "Origin, Accept, Content-Type, Authorization");
+                filterChain.doFilter(request, httpServletResponse);
             }
-        }
+
     }
 
 }

@@ -24,6 +24,6 @@ public class AssignmentDTO {
     private Float points;
     private String filePath;
     private Long topicId;
-    private String userId;
+    private Long loggedInUserId;
     private UserType userType;
 }

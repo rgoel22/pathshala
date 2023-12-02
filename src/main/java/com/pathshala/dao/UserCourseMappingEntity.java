@@ -20,8 +20,8 @@ public class UserCourseMappingEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    private String userId;
+    private Long id;
+    private Long userId;
     private Long courseId;
 
     @Override

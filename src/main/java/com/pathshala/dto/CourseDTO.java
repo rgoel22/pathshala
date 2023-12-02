@@ -1,6 +1,7 @@
 package com.pathshala.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.pathshala.enums.UserType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,11 +22,11 @@ public class CourseDTO {
     private Long id;
     @NotNull
     private String name;
-    private Long topicId;
     @NotNull
     private String code;
     private String description;
     private String syllabus;
-    @JsonProperty("instructorId")
+    @JsonProperty(value = "instructorId")
     private Long userId;
+    private UserType userType;
 }

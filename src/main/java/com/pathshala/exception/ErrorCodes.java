@@ -12,4 +12,5 @@ public class ErrorCodes {
     public static final String MISSING_EMAIL = "missing_email";
     public static final String MISSING_GRADE = "missing_grade";
     public static final String INCORRECT_CREDENTIALS = "incorrect_credentials";
+    public static final String USER_NOT_FOUND = "user_not_found";
 }

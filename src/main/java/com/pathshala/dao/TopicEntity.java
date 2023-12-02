@@ -25,6 +25,8 @@ public class TopicEntity extends MetaData {
     private String name;
     private String description;
 
+    private int courseId;
+
 
     @Override
     public boolean equals(Object o) {
@@ -36,7 +38,7 @@ public class TopicEntity extends MetaData {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description);
+        return Objects.hash(id, name, description, courseId);
     }
 
     @Override
@@ -45,6 +47,7 @@ public class TopicEntity extends MetaData {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
+                ", courseId=" + courseId +
                 '}';
     }
 }

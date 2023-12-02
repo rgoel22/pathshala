@@ -3,6 +3,7 @@ package com.pathshala.controller;
 import com.pathshala.dto.CourseDTO;
 import com.pathshala.security.TokenService;
 import com.pathshala.service.CourseService;
+import com.pathshala.service.UserCourseMappingService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,7 @@ import java.util.List;
 public class CourseController {
     private CourseService courseService;
     private TokenService token;
+    private UserCourseMappingService userCourseMappingService;
     @GetMapping
     public ResponseEntity<List<CourseDTO>> findAll(){
         List<CourseDTO> courseDTOList = courseService.findAll();
@@ -30,7 +32,6 @@ public class CourseController {
 
     @PostMapping
     public ResponseEntity<CourseDTO> saveOrUpdate(@RequestBody @Valid CourseDTO course) {
-
         CourseDTO savedCourse = courseService.saveOrUpdate(course);
         return ResponseEntity.ok().body(savedCourse);
     }
@@ -41,9 +42,9 @@ public class CourseController {
         return ResponseEntity.ok().body(courseDTO);
     }
 
-    @GetMapping("/{userId}/{courseId}")
-    public ResponseEntity<String> enrollUserInCourse(@PathVariable @NotNull String userId, @PathVariable @NotNull Long courseId){
-        String response = courseService.enrollUserInCourse(userId, courseId);
+    @GetMapping("/enroll/{userId}/{courseId}")
+    public ResponseEntity<String> enrollUserInCourse(@PathVariable @NotNull Long userId, @PathVariable @NotNull Long courseId){
+        String response = userCourseMappingService.enrollUserInCourse(userId, courseId);
         return ResponseEntity.ok().body(response);
     }
 

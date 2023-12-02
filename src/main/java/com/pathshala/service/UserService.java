@@ -1,11 +1,14 @@
 package com.pathshala.service;
 
 import com.pathshala.dao.UserEntity;
+import com.pathshala.dto.CourseDTO;
 import com.pathshala.dto.LoginRequestDTO;
 import com.pathshala.dto.UserDTO;
+import com.pathshala.enums.UserType;
 import com.pathshala.exception.BaseRuntimeException;
 import com.pathshala.exception.ErrorCodes;
 import com.pathshala.exception.GenericExceptions;
+import com.pathshala.exception.NotFoundException;
 import com.pathshala.exception.RecordExistsException;
 import com.pathshala.repository.UserRepository;
 import com.pathshala.security.TokenService;
@@ -16,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -27,6 +31,7 @@ public class UserService {
     private TokenService tokenService;
     private SessionInfoService sessionInfoService;
     private final ModelMapper modelMapper;
+    private UserCourseMappingService userCourseMappingService;
 
     public Boolean saveUserData(UserDTO userDTO) {
         UserEntity user = new UserEntity();
@@ -59,12 +64,17 @@ public class UserService {
     public LoginRequestDTO login(LoginRequestDTO payload) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         String hashedPassword = EncryptionUtility.makeSHA1Hash(payload.getPassword());
         Optional<UserEntity> optionalUser = userRepository.findByUserIdAndPassword(payload.getUserId(), hashedPassword);
-        if(!optionalUser.isPresent()){
+        if(optionalUser.isEmpty()){
             throw new GenericExceptions(ErrorCodes.INCORRECT_CREDENTIALS, "Incorrect credentials!");
         }
         UserEntity user = optionalUser.get();
         String token = tokenService.createToken(user.getId(), user.getUserType().toString());
         if (sessionInfoService.createSession(user.getId(), token)){
+            if (user.getUserType().equals(UserType.STUDENT.toString())){
+
+            } else if (user.getUserType().equals(UserType.INSTRUCTOR.toString())) {
+
+            }
             return LoginRequestDTO.builder().userId(user.getId().toString())
                     .userType(user.getUserType().toString())
                     .token(token).build();
@@ -75,4 +85,27 @@ public class UserService {
     public Boolean logout(Long userId) {
         return sessionInfoService.expireSessionForUserId(userId);
     }
+
+    public UserDTO getStudentDetails(Long userId){
+        UserEntity user = this.findEntityById(userId);
+        List<CourseDTO> courses = userCourseMappingService.enrolledStudentCourses(userId);
+        for(CourseDTO course: courses){
+            course.setUserId(null);
+            course.setUserType(null);
+            course.setId(null);
+        }
+        UserDTO userDTO = modelMapper.map(user, UserDTO.class);
+        userDTO.setPassword(null);
+        userDTO.setCourses(courses);
+        return userDTO;
+    }
+
+    private UserEntity findEntityById(Long id) {
+        Optional<UserEntity> user = userRepository.findById(id);
+        if (user.isEmpty()){
+            throw new NotFoundException(ErrorCodes.USER_NOT_FOUND, "User not found!");
+        }
+        return user.get();
+    }
+
 }

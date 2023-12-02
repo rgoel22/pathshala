@@ -28,7 +28,7 @@ public class RequestFilter implements Filter {
         if( !url.contains("login") && !url.contains("signUp")){
             String payload = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
             JSONObject jsonObject = new JSONObject(payload);
-            Long userId = jsonObject.optLongObject("userId", 0L);
+            Long userId = jsonObject.optLongObject("loogedInUserId", 0L);
             String token = jsonObject.optString("token", "");
             String userType = jsonObject.optString("userType", "");
             if (tokenService.validateToken(userId, token, userType)) {

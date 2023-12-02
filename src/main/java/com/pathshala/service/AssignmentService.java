@@ -37,7 +37,7 @@ public class AssignmentService {
 
     private AssignmentEntity findEntityById(Long id) {
         Optional<AssignmentEntity> course = assignmentRepository.findById(id);
-        if (!course.isPresent()){
+        if (course.isEmpty()){
             throw new NotFoundException(ErrorCodes.ASSIGNMENT_NOT_FOUND, "Assignment not found!");
         }
         return course.get();
@@ -50,7 +50,7 @@ public class AssignmentService {
 
     public AssignmentDTO findByTopicId(Long topicId) {
         Optional<AssignmentEntity> course = assignmentRepository.findByTopicId(topicId);
-        if (!course.isPresent()){
+        if (course.isEmpty()){
             throw new NotFoundException(ErrorCodes.ASSIGNMENT_NOT_FOUND, "Assignment not found!");
         }
         return modelMapper.map(course, AssignmentDTO.class);

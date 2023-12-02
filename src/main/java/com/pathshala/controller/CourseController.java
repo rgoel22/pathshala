@@ -54,5 +54,10 @@ public class CourseController {
         List<CourseDTO> courseDTOS = courseService.instructorCourse(userId);
         return ResponseEntity.ok().body(courseDTOS);
     }
+    @GetMapping("/student")
+    public ResponseEntity<List<CourseDTO>> studentCourse(@RequestParam @NotNull Long userId) {
+        List<CourseDTO> courseDTOS = userCourseMappingService.enrolledStudentCourses(userId);
+        return ResponseEntity.ok().body(courseDTOS);
+    }
 
 }

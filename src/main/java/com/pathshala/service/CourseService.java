@@ -59,4 +59,5 @@ public class CourseService {
         List<CourseEntity> courses = courseRepository.findByUserId(userId);
         return courses.stream().map(course -> modelMapper.map(course, CourseDTO.class)).collect(Collectors.toList());
     }
+
 }

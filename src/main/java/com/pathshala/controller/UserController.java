@@ -29,7 +29,7 @@ public class UserController {
     }
 
     @PostMapping("/signUp")
-    public ResponseEntity<Boolean> SignUp(@RequestBody @Valid UserDTO userDTO) {
+    public ResponseEntity<Boolean> signUp(@RequestBody @Valid UserDTO userDTO) {
         Boolean signUpBool = userService.saveUserData(userDTO);
         return ResponseEntity.ok().body(signUpBool);
     }

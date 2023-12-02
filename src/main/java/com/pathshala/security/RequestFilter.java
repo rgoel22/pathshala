@@ -23,21 +23,29 @@ public class RequestFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws ServletException, IOException, BaseRuntimeException {
-        String url = ((RequestFacade) request).getRequestURL().toString();
-        tokenService.expireToken();
-        if( !url.contains("login") && !url.contains("signUp")){
-            String payload = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-            JSONObject jsonObject = new JSONObject(payload);
-            Long userId = jsonObject.optLongObject("loogedInUserId", 0L);
-            String token = jsonObject.optString("token", "");
-            String userType = jsonObject.optString("userType", "");
-            if (tokenService.validateToken(userId, token, userType)) {
-                filterChain.doFilter(request, response);
-            } else {
-                throw new UnauthorizedAccessException("Hello", "Hello");
-            }
+        if(((RequestFacade) request).getMethod().equalsIgnoreCase("OPTIONS")){
+            response.setContentType("text/plain");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write("OK");
+            response.getWriter().flush();
+            response.getWriter().close();
         } else{
-            filterChain.doFilter(request, response);
+            String url = ((RequestFacade) request).getRequestURL().toString();
+            tokenService.expireToken();
+            if( !url.contains("login") && !url.contains("signUp")){
+                String payload = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+                JSONObject jsonObject = new JSONObject(payload);
+                Long userId = jsonObject.optLongObject("loogedInUserId", 0L);
+                String token = jsonObject.optString("token", "");
+                String userType = jsonObject.optString("userType", "");
+                if (tokenService.validateToken(userId, token, userType)) {
+                    filterChain.doFilter(request, response);
+                } else {
+                    throw new UnauthorizedAccessException("Hello", "Hello");
+                }
+            } else{
+                filterChain.doFilter(request, response);
+            }
         }
     }
 

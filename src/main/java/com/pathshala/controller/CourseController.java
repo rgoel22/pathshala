@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -46,6 +47,12 @@ public class CourseController {
     public ResponseEntity<String> enrollUserInCourse(@PathVariable @NotNull Long userId, @PathVariable @NotNull Long courseId){
         String response = userCourseMappingService.enrollUserInCourse(userId, courseId);
         return ResponseEntity.ok().body(response);
+    }
+
+    @GetMapping("/instructor")
+    public ResponseEntity<List<CourseDTO>> instructorCourse(@RequestParam @NotNull Long userId) {
+        List<CourseDTO> courseDTOS = courseService.instructorCourse(userId);
+        return ResponseEntity.ok().body(courseDTOS);
     }
 
 }

@@ -54,4 +54,9 @@ public class CourseService {
         List<CourseEntity> courses = courseRepository.findAllById(courseIds);
         return courses.stream().map(course -> modelMapper.map(course, CourseDTO.class)).collect(Collectors.toList());
     }
+
+    public List<CourseDTO> instructorCourse(Long userId) {
+        List<CourseEntity> courses = courseRepository.findByUserId(userId);
+        return courses.stream().map(course -> modelMapper.map(course, CourseDTO.class)).collect(Collectors.toList());
+    }
 }

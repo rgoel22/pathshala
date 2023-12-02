@@ -37,7 +37,8 @@ public class RequestFilter implements Filter {
 //        } else{
             String url = ((RequestFacade) request).getRequestURL().toString();
             tokenService.expireToken();
-            if( !url.contains("login") && !url.contains("signUp")){
+            if(false){
+           // if( !url.contains("login") && !url.contains("signUp")){
                 String payload = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
                 JSONObject jsonObject = new JSONObject(payload);
                 Long userId = jsonObject.optLongObject("loogedInUserId", 0L);
@@ -49,11 +50,12 @@ public class RequestFilter implements Filter {
                     throw new UnauthorizedAccessException("Hello", "Hello");
                 }
             } else{
-                HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-                httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
-                httpServletResponse.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-                httpServletResponse.setHeader("Access-Control-Allow-Headers", "Origin, Accept, Content-Type, Authorization");
-                filterChain.doFilter(request, httpServletResponse);
+
+                ((HttpServletResponse) response).setHeader("Access-Control-Allow-Origin", "*");
+                ((HttpServletResponse) response).setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+                ((HttpServletResponse) response).setHeader("Access-Control-Allow-Headers", "Origin, Accept, Content-Type, Authorization");
+
+                filterChain.doFilter(request, response);
             }
 
     }

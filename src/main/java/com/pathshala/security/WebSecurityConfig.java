@@ -9,10 +9,9 @@ public class WebSecurityConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/pathshala/**")
-                .allowedOrigins("https://pathshala-adee99131d70.herokuapp.com")
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                .allowedHeaders("Origin", "Content-Type", "Accept", "Authorization")
-                .allowCredentials(true);
+        registry.addMapping("/**")
+                .allowedOrigins("*")
+                .allowedMethods("*")
+                .allowedHeaders("*");
     }
 }

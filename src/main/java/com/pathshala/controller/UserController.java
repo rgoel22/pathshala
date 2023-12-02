@@ -5,6 +5,7 @@ import com.pathshala.dto.UserDTO;
 import com.pathshala.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +20,7 @@ import java.security.NoSuchAlgorithmException;
 @RestController
 @RequestMapping("/user")
 @AllArgsConstructor
+@CrossOrigin(origins = "https://pathshala-api-8e4271465a87.herokuapp.com", maxAge = 360000)
 public class UserController {
     private UserService userService;
 

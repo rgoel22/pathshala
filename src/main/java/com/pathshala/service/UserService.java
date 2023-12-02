@@ -32,6 +32,7 @@ public class UserService {
     private SessionInfoService sessionInfoService;
     private final ModelMapper modelMapper;
     private UserCourseMappingService userCourseMappingService;
+    private CourseService courseService;
 
     public Boolean saveUserData(UserDTO userDTO) {
         UserEntity user = new UserEntity();
@@ -69,17 +70,31 @@ public class UserService {
         }
         UserEntity user = optionalUser.get();
         String token = tokenService.createToken(user.getId(), user.getUserType().toString());
-        if (sessionInfoService.createSession(user.getId(), token)){
-            if (user.getUserType().equals(UserType.STUDENT.toString())){
-
-            } else if (user.getUserType().equals(UserType.INSTRUCTOR.toString())) {
-
+        if (sessionInfoService.createSession(user.getId(), token)) {
+            UserDTO validUser = new UserDTO();
+            if (user.getUserType().equals(UserType.STUDENT)){
+                validUser = getStudentDetails(user.getId());
+            } else if (user.getUserType().equals(UserType.INSTRUCTOR)) {
+                validUser = getInstructorDetails(user.getId());
             }
             return LoginRequestDTO.builder().userId(user.getId().toString())
                     .userType(user.getUserType().toString())
-                    .token(token).build();
+                    .token(token).userDetails(validUser).build();
         }
         throw new BaseRuntimeException("","");
+    }
+
+    private UserDTO getInstructorDetails(Long userId) {
+        UserEntity user = this.findEntityById(userId);
+        List<CourseDTO> courses = courseService.instructorCourse(userId);
+        for(CourseDTO course: courses){
+            course.setUserId(null);
+            course.setUserType(null);
+        }
+        UserDTO userDTO = modelMapper.map(user, UserDTO.class);
+        userDTO.setPassword(null);
+        userDTO.setCourses(courses);
+        return userDTO;
     }
 
     public Boolean logout(Long userId) {
@@ -92,7 +107,6 @@ public class UserService {
         for(CourseDTO course: courses){
             course.setUserId(null);
             course.setUserType(null);
-            course.setId(null);
         }
         UserDTO userDTO = modelMapper.map(user, UserDTO.class);
         userDTO.setPassword(null);

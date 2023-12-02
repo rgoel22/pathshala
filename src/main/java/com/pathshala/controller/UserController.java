@@ -37,13 +37,9 @@ public class UserController {
     }
 
     @GetMapping("/logout")
-    public ResponseEntity logout(@RequestParam(required = true) Long userId) {
+    public ResponseEntity<Boolean> logout(@RequestParam(required = true) Long userId) {
         Boolean isLoggedOut = userService.logout(userId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(isLoggedOut);
     }
 
-    @GetMapping("/home")
-    public ResponseEntity<String> hello(){
-        return ResponseEntity.ok().body("Hello");
-    }
 }

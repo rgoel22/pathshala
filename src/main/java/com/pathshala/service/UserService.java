@@ -130,9 +130,6 @@ public class UserService {
         for (UserDTO instructor: instructorDto) {
             instructor.setPassword(null);
             instructor.setCourses(null);
-            instructor.setEmailId(null);
-            instructor.setPhoneNumber(null);
-            instructor.setUserId(null);
         }
         return instructorDto;
     }

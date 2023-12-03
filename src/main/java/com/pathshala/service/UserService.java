@@ -16,6 +16,7 @@ import com.pathshala.util.EncryptionUtility;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
@@ -38,7 +39,7 @@ public class UserService {
     public Boolean saveUserData(UserDTO userDTO) {
         UserEntity user = new UserEntity();
         //check if user is already present using the userId
-        Optional<UserEntity> userEntityOptional = userRepository.findByUserId(userDTO.getUserId());
+        Optional<UserEntity> userEntityOptional = userRepository.findByUserIdAndIsActiveTrue(userDTO.getUserId());
         if(userEntityOptional.isPresent()){
             throw new RecordExistsException(ErrorCodes.USER_ALREADY_PRESENT, "UserId not available!");
         }
@@ -65,7 +66,7 @@ public class UserService {
 
     public LoginRequestDTO login(LoginRequestDTO payload) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         String hashedPassword = EncryptionUtility.makeSHA1Hash(payload.getPassword());
-        Optional<UserEntity> optionalUser = userRepository.findByUserIdAndPassword(payload.getUserId(), hashedPassword);
+        Optional<UserEntity> optionalUser = userRepository.findByUserIdAndPasswordAndIsActiveTrue(payload.getUserId(), hashedPassword);
         if(optionalUser.isEmpty()){
             throw new GenericExceptions(ErrorCodes.INCORRECT_CREDENTIALS, "Incorrect credentials!");
         }
@@ -128,7 +129,7 @@ public class UserService {
     }
 
     private List<UserDTO> getListOfUser(UserType userType){
-        List<UserEntity> users = userRepository.findAllByUserType(userType);
+        List<UserEntity> users = userRepository.findAllByUserTypeAndIsActiveTrue(userType);
         List<UserDTO> userDTOS = users.stream().map(instructor -> modelMapper.map(instructor, UserDTO.class))
                 .collect(Collectors.toList());
         for (UserDTO user: userDTOS) {
@@ -154,5 +155,11 @@ public class UserService {
 
     public List<UserDTO> getStudent() {
         return getListOfUser(UserType.STUDENT);
+    }
+
+    @Transactional
+    public Boolean deleteUser(Long userId) {
+        int noOfRecords = userRepository.markUserInActive(userId);
+        return noOfRecords == 1;
     }
 }

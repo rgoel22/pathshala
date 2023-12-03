@@ -23,20 +23,15 @@ public class UserEntity extends MetaData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    //@Column(name="firstname")
     private String firstName;
-    //@Column(name="lastname")
     private String lastName;
-    //@Column(name = "emailid")
     private String emailId;
-    //@Column(name = "phonenumber")
     private String phoneNumber;
-    //@Column(name="usertype")
     @Enumerated(EnumType.STRING)
     private UserType userType;
-    //@Column(name = "userid")
     private String userId;
     private String password;
+    private Boolean isActive;
 
     @Override
     public boolean equals(Object o) {

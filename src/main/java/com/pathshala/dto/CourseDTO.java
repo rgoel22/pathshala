@@ -31,4 +31,5 @@ public class CourseDTO {
     @JsonProperty(value = "instructorId")
     private Long userId;
     private UserType userType;
+    private String instructorName;
 }

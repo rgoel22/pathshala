@@ -1,10 +1,12 @@
 package com.pathshala.service;
 
 import com.pathshala.dao.CourseEntity;
+import com.pathshala.dao.UserEntity;
 import com.pathshala.dto.CourseDTO;
 import com.pathshala.exception.ErrorCodes;
 import com.pathshala.exception.NotFoundException;
 import com.pathshala.repository.CourseRepository;
+import com.pathshala.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -19,10 +21,19 @@ public class CourseService {
 
     private CourseRepository courseRepository;
     private ModelMapper modelMapper;
+    private UserRepository userRepository;
     public List<CourseDTO> findAll(){
         List<CourseEntity> courseEntities = courseRepository.findAll();
-        return courseEntities.stream().map(courseEntity -> modelMapper.map(courseEntity, CourseDTO.class))
+        List<CourseDTO> courseDTOS = courseEntities.stream().map(course -> modelMapper.map(course, CourseDTO.class))
                 .collect(Collectors.toList());
+        for(CourseDTO course: courseDTOS){
+            Optional<UserEntity> userEntity = userRepository.findById(course.getUserId());
+            if(userEntity.isPresent()){
+                String userName = userEntity.get().getFirstName() +" "+ userEntity.get().getLastName();
+                course.setInstructorName(userName);
+            }
+        }
+        return courseDTOS;
     }
 
 

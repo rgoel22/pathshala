@@ -1,6 +1,5 @@
 package com.pathshala.controller;
 
-import com.pathshala.dto.FileDTO;
 import com.pathshala.service.FileService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,8 +21,7 @@ public class FileController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadFile(@Valid @RequestBody FileDTO fileDto){
-        MultipartFile file = fileDto.getFile();
+    public ResponseEntity<String> uploadFile(@Valid @RequestBody MultipartFile file){
         String filePath = fileService.uploadFile(file);
         return ResponseEntity.ok().body(filePath);
     }

@@ -7,12 +7,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import java.util.List;
 
 @Repository
 public interface SessionInfoRepository extends JpaRepository<SessionInfoEntity, Long> {
 
-    Optional<SessionInfoEntity> findByUserIdAndIsActiveTrue(Long userId);
+    List<SessionInfoEntity> findByUserIdAndIsActiveTrue(Long userId);
 
     @Query(value = "update sessionInfo set isActive = '0' where createdOn <= now() - interval 1 hour and isActive = '1'"
             ,nativeQuery = true)

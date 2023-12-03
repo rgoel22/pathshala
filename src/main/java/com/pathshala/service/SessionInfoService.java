@@ -22,7 +22,7 @@ public class SessionInfoService {
         } else if(sessionInfo.size() > 1){
             throw new BaseRuntimeException("Othersessionactive", "other session active");
         }
-        return sessionInfo.getFirst();
+        return sessionInfo.get(0);
     }
 
     public Boolean createSession(Long userId, String token) {

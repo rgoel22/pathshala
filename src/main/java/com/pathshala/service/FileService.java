@@ -6,10 +6,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
+import java.nio.file.Paths;
 
 @Service
 @AllArgsConstructor
@@ -19,13 +18,14 @@ public class FileService {
     public String uploadFile(MultipartFile file) {
         String uploadPath = config.getPropertyByName("filePath");
         try{
-            File directory = new File(uploadPath);
-            if(!directory.exists()){
-                directory.mkdir();
+            Path uploadFile = Paths.get(uploadPath);
+            if(!Files.exists(uploadFile)){
+                Files.createDirectory(uploadFile);
             }
             String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-            Path filePath = Path.of(uploadPath, fileName);
-            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+            Path filePath = Paths.get(uploadPath + fileName);
+            Files.copy(file.getInputStream(), filePath);
+//            FileCopyUtils.copy(file.getBytes(), filePath, StandardCopyOption.REPLACE_EXISTING);
             return filePath.toString();
         } catch(Exception e) {
             throw new BaseRuntimeException("","");

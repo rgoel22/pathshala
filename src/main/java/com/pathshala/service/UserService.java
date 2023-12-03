@@ -140,7 +140,13 @@ public class UserService {
 
     public UserDTO updateUser(UserDTO payload) {
         UserEntity savedUser = findEntityById(payload.getId());
-        return null;
+        modelMapper.map(payload, savedUser);
+        UserEntity updatedUser = userRepository.save(savedUser);
+        UserDTO userDTO = modelMapper.map(updatedUser, UserDTO.class);
+        userDTO.setPassword(null);
+        userDTO.setCourses(null);
+        userDTO.setUserType(null);
+        return userDTO;
     }
 
     public List<UserDTO> getStudent() {

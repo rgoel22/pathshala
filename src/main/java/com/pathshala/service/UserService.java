@@ -124,13 +124,26 @@ public class UserService {
     }
 
     public List<UserDTO> getInstructor() {
-        List<UserEntity> instructors = userRepository.findAllByUserType(UserType.INSTRUCTOR);
-        List<UserDTO> instructorDto = instructors.stream().map(instructor -> modelMapper.map(instructor, UserDTO.class))
+        return getListOfUser(UserType.INSTRUCTOR);
+    }
+
+    private List<UserDTO> getListOfUser(UserType userType){
+        List<UserEntity> users = userRepository.findAllByUserType(userType);
+        List<UserDTO> userDTOS = users.stream().map(instructor -> modelMapper.map(instructor, UserDTO.class))
                 .collect(Collectors.toList());
-        for (UserDTO instructor: instructorDto) {
-            instructor.setPassword(null);
-            instructor.setCourses(null);
+        for (UserDTO user: userDTOS) {
+            user.setPassword(null);
+            user.setCourses(null);
         }
-        return instructorDto;
+        return userDTOS;
+    }
+
+    public UserDTO updateUser(UserDTO payload) {
+        UserEntity savedUser = findEntityById(payload.getId());
+        return null;
+    }
+
+    public List<UserDTO> getStudent() {
+        return getListOfUser(UserType.STUDENT);
     }
 }

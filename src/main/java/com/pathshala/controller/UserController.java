@@ -48,5 +48,17 @@ public class UserController {
         List<UserDTO> instructors = userService.getInstructor();
         return ResponseEntity.ok().body(instructors);
     }
+
+    @PostMapping("/updateUser")
+    public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO payload){
+        UserDTO user = userService.updateUser(payload);
+        return ResponseEntity.ok().body(user);
+    }
+
+    @GetMapping("/getStudent")
+    public ResponseEntity<List<UserDTO>> getStudent(){
+        List<UserDTO> students = userService.getStudent();
+        return ResponseEntity.ok().body(students);
+    }
 }
 

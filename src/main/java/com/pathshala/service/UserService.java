@@ -78,12 +78,21 @@ public class UserService {
                 validUser = getStudentDetails(user.getId());
             } else if (user.getUserType().equals(UserType.INSTRUCTOR)) {
                 validUser = getInstructorDetails(user.getId());
+            } else if(user.getUserType().equals(UserType.ADMIN)) {
+                validUser = getAdminDetails(user.getId());
             }
             return LoginRequestDTO.builder().userId(user.getId().toString())
                     .userType(user.getUserType().toString())
                     .token(token).userDetails(validUser).build();
         }
         throw new BaseRuntimeException("","");
+    }
+
+    private UserDTO getAdminDetails(Long userId) {
+        UserEntity user = this.findEntityById(userId);
+        UserDTO userDTO = modelMapper.map(user, UserDTO.class);
+        userDTO.setPassword(null);
+        return userDTO;
     }
 
     private UserDTO getInstructorDetails(Long userId) {

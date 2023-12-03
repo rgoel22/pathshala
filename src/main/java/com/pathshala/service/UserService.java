@@ -110,6 +110,7 @@ public class UserService {
     }
 
     public Boolean logout(Long userId) {
+        sessionInfoService.expireToken();
         return sessionInfoService.expireSessionForUserId(userId);
     }
 

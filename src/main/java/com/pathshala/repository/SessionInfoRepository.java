@@ -20,6 +20,6 @@ public interface SessionInfoRepository extends JpaRepository<SessionInfoEntity, 
     int expireToken();
 
     @Modifying
-    @Query(value = "update sessioninfo set isActive = '0' where userId = :userId", nativeQuery = true)
+    @Query(value = "update sessionInfo set isActive = '0' where userId = :userId", nativeQuery = true)
     int expireSessionByUserId(@Param("userId") Long userId);
 }

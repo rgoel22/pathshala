@@ -11,7 +11,6 @@ import lombok.*;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class LoginRequestDTO {
-
     private String userId;
     private String password;
     private String token;

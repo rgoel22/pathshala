@@ -56,6 +56,7 @@ public class UserService {
             String hashedPassword = EncryptionUtility.makeSHA1Hash(userDTO.getPassword());
             userDTO.setPassword(hashedPassword);
             modelMapper.map(userDTO, user);
+            user.setIsActive(true);
             userRepository.save(user);
         } catch (Exception e){
             throw new GenericExceptions(ErrorCodes.DATA_NOT_SAVED, "User data not saved. Please try again!");

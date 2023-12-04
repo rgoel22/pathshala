@@ -1,7 +1,6 @@
 package com.pathshala.service;
 
 import com.pathshala.dao.SessionInfoEntity;
-import com.pathshala.exception.BaseRuntimeException;
 import com.pathshala.exception.NotFoundException;
 import com.pathshala.repository.SessionInfoRepository;
 import lombok.AllArgsConstructor;
@@ -15,12 +14,15 @@ import java.util.List;
 public class SessionInfoService {
     private SessionInfoRepository sessionInfoRepository;
 
+    @Transactional
     public SessionInfoEntity findByUserIdAndIsActive(Long userId){
-        List<SessionInfoEntity> sessionInfo = sessionInfoRepository.findByUserIdAndIsActiveTrue(userId);
+        List<SessionInfoEntity> sessionInfo = sessionInfoRepository.findByUserIdAndIsActiveTrueOrderByIdDesc(userId);
         if(sessionInfo.isEmpty()){
             throw new NotFoundException("", "");
         } else if(sessionInfo.size() > 1){
-            throw new BaseRuntimeException("Othersessionactive", "other session active");
+            for(int i = 1 ;i < sessionInfo.size(); i++){
+                sessionInfoRepository.expireTokenById(sessionInfo.get(i).getId());
+            }
         }
         return sessionInfo.get(0);
     }

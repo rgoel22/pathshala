@@ -43,7 +43,7 @@ public class SessionInfoServiceTests {
     @Test
     void testFindByUserIdAndIsActive_WhenSessionInfoIsEmpty_ShouldThrowNotFoundException() {
         Long userId = 1L;
-        when(sessionInfoRepository.findByUserIdAndIsActiveTrue(userId)).thenReturn(new ArrayList<>());
+        when(sessionInfoRepository.findByUserIdAndIsActiveTrueOrderByIdDesc(userId)).thenReturn(new ArrayList<>());
 
         assertThrows(NotFoundException.class, () -> sessionInfoService.findByUserIdAndIsActive(userId));
     }
@@ -54,7 +54,7 @@ public class SessionInfoServiceTests {
         List<SessionInfoEntity> multipleSessionInfo = new ArrayList<>();
         multipleSessionInfo.add(new SessionInfoEntity());
         multipleSessionInfo.add(new SessionInfoEntity());
-        when(sessionInfoRepository.findByUserIdAndIsActiveTrue(userId)).thenReturn(multipleSessionInfo);
+        when(sessionInfoRepository.findByUserIdAndIsActiveTrueOrderByIdDesc(userId)).thenReturn(multipleSessionInfo);
 
         assertThrows(BaseRuntimeException.class, () -> sessionInfoService.findByUserIdAndIsActive(userId));
     }
@@ -65,7 +65,7 @@ public class SessionInfoServiceTests {
         SessionInfoEntity sessionInfoEntity = new SessionInfoEntity();
         List<SessionInfoEntity> singleSessionInfo = new ArrayList<>();
         singleSessionInfo.add(sessionInfoEntity);
-        when(sessionInfoRepository.findByUserIdAndIsActiveTrue(userId)).thenReturn(singleSessionInfo);
+        when(sessionInfoRepository.findByUserIdAndIsActiveTrueOrderByIdDesc(userId)).thenReturn(singleSessionInfo);
 
         SessionInfoEntity result = sessionInfoService.findByUserIdAndIsActive(userId);
 

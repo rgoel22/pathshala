@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface SessionInfoRepository extends JpaRepository<SessionInfoEntity, Long> {
 
-    List<SessionInfoEntity> findByUserIdAndIsActiveTrue(Long userId);
+    List<SessionInfoEntity> findByUserIdAndIsActiveTrueOrderByIdDesc(Long userId);
 
     @Query(value = "update sessionInfo set isActive = '0' where createdOn <= now() - interval 1 hour and isActive = '1'"
             ,nativeQuery = true)
@@ -22,4 +22,8 @@ public interface SessionInfoRepository extends JpaRepository<SessionInfoEntity, 
     @Modifying
     @Query(value = "update sessionInfo set isActive = '0' where userId = :userId", nativeQuery = true)
     int expireSessionByUserId(@Param("userId") Long userId);
+
+    @Modifying
+    @Query(value = "update sessionInfo set isActive = '0' where id = :id", nativeQuery = true)
+    int expireTokenById(@Param("id") Long id);
 }

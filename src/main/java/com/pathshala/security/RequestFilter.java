@@ -36,7 +36,7 @@ public class RequestFilter implements Filter {
             String url = ((RequestFacade) request).getRequestURL().toString();
             tokenService.expireToken();
             HttpServletRequest httpRequest = (HttpServletRequest) request;
-            //  if(false){
+              //if(false){
             if (!url.contains("login") && !url.contains("signUp")) {
                 String token = httpRequest.getHeader("authorization-token");
                 String userId = httpRequest.getHeader("userId");

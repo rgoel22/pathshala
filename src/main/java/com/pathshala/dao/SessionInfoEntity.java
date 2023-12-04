@@ -20,10 +20,8 @@ public class SessionInfoEntity extends MetaData{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-   // @Column(name="userId")
     private Long userId;
-    //@Column(name = "sessiontoken")
     private String sessionToken;
-    //@Column(name = "isactive")
+    private String initiatorIp;
     private Boolean isActive;
 }

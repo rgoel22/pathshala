@@ -110,14 +110,14 @@ public class UserServiceTests {
 
     @Test
     public void testLogin_Success_for_Student() throws Exception {
-        LoginRequestDTO loginRequestDTO = new LoginRequestDTO("userId", "password", "test", "test", new UserDTO());
+        LoginRequestDTO loginRequestDTO = new LoginRequestDTO("userId", "password", "test", "test", new UserDTO(), "");
         UserEntity userEntity = new UserEntity();
         userEntity.setId(1L);
         userEntity.setUserType(UserType.STUDENT);
         when(userRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(new UserEntity(1L, "test", "test", "test", "test",UserType.STUDENT, "test", "test", true)));
         when(userRepository.findByUserIdAndPasswordAndIsActiveTrue(anyString(), anyString())).thenReturn(Optional.of(userEntity));
         when(tokenService.createToken(anyLong(), anyString())).thenReturn("token");
-        when(sessionInfoService.createSession(anyLong(), anyString())).thenReturn(true);
+        when(sessionInfoService.createSession(anyLong(), anyString(), anyString())).thenReturn(true);
 
         LoginRequestDTO result = userService.login(loginRequestDTO);
 
@@ -129,14 +129,14 @@ public class UserServiceTests {
 
     @Test
     public void testLogin_Success_for_Instructor() throws Exception {
-        LoginRequestDTO loginRequestDTO = new LoginRequestDTO("userId", "password", "test", "test", new UserDTO());
+        LoginRequestDTO loginRequestDTO = new LoginRequestDTO("userId", "password", "test", "test", new UserDTO(), "");
         UserEntity userEntity = new UserEntity();
         userEntity.setId(1L);
         userEntity.setUserType(UserType.INSTRUCTOR);
         when(userRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(new UserEntity(1L, "test", "test", "test", "test",UserType.INSTRUCTOR, "test", "test", true)));
         when(userRepository.findByUserIdAndPasswordAndIsActiveTrue(anyString(), anyString())).thenReturn(Optional.of(userEntity));
         when(tokenService.createToken(anyLong(), anyString())).thenReturn("token");
-        when(sessionInfoService.createSession(anyLong(), anyString())).thenReturn(true);
+        when(sessionInfoService.createSession(anyLong(), anyString(), anyString())).thenReturn(true);
 
         LoginRequestDTO result = userService.login(loginRequestDTO);
 
@@ -148,14 +148,14 @@ public class UserServiceTests {
 
     @Test
     public void testLogin_Success_for_ADMIN() throws Exception {
-        LoginRequestDTO loginRequestDTO = new LoginRequestDTO("userId", "password", "test", "test", new UserDTO());
+        LoginRequestDTO loginRequestDTO = new LoginRequestDTO("userId", "password", "test", "test", new UserDTO(), "");
         UserEntity userEntity = new UserEntity();
         userEntity.setId(1L);
         userEntity.setUserType(UserType.ADMIN);
         when(userRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(new UserEntity(1L, "test", "test", "test", "test",UserType.ADMIN, "test", "test", true)));
         when(userRepository.findByUserIdAndPasswordAndIsActiveTrue(anyString(), anyString())).thenReturn(Optional.of(userEntity));
         when(tokenService.createToken(anyLong(), anyString())).thenReturn("token");
-        when(sessionInfoService.createSession(anyLong(), anyString())).thenReturn(true);
+        when(sessionInfoService.createSession(anyLong(), anyString(), anyString())).thenReturn(true);
 
         LoginRequestDTO result = userService.login(loginRequestDTO);
 

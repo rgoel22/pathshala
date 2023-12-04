@@ -73,7 +73,7 @@ public class UserService {
         }
         UserEntity user = optionalUser.get();
         String token = tokenService.createToken(user.getId(), user.getUserType().toString());
-        if (sessionInfoService.createSession(user.getId(), token)) {
+        if (sessionInfoService.createSession(user.getId(), token, payload.getIp())) {
             UserDTO validUser = new UserDTO();
             if (user.getUserType().equals(UserType.STUDENT)){
                 validUser = getStudentDetails(user.getId());

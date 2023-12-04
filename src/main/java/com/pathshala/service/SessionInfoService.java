@@ -27,8 +27,8 @@ public class SessionInfoService {
         return sessionInfo.get(0);
     }
 
-    public Boolean createSession(Long userId, String token) {
-        SessionInfoEntity sessionInfo = SessionInfoEntity.builder().userId(userId).sessionToken(token).isActive(true).build();
+    public Boolean createSession(Long userId, String token, String ip) {
+        SessionInfoEntity sessionInfo = SessionInfoEntity.builder().userId(userId).sessionToken(token).initiatorIp(ip).isActive(true).build();
         SessionInfoEntity savedSession = sessionInfoRepository.save(sessionInfo);
         return true;
     }

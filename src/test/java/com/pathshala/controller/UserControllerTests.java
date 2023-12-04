@@ -149,7 +149,7 @@ public class UserControllerTests {
     }
 
     private LoginRequestDTO loginRequestDTO(){
-        return new LoginRequestDTO("TestUser", "testPass","testToken", UserType.ADMIN.toString(), signUpUserDTO());
+        return new LoginRequestDTO("TestUser", "testPass","testToken", UserType.ADMIN.toString(), signUpUserDTO(),"");
 
     }
 

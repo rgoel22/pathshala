@@ -86,7 +86,7 @@ public class SessionInfoServiceTests {
         when(sessionInfoRepository.save(sessionInfo)).thenReturn(sessionInfo);
 
         // Call method
-        Boolean result = sessionInfoService.createSession(userId, token);
+        Boolean result = sessionInfoService.createSession(userId, token,"");
 
         assertTrue(result); // Check if method returns true
     }
@@ -104,7 +104,7 @@ public class SessionInfoServiceTests {
         when(sessionInfoRepository.save(sessionInfo)).thenReturn(sessionInfo);
 
         // Call method
-        Boolean result = sessionInfoService.createSession(userId, token);
+        Boolean result = sessionInfoService.createSession(userId, token,"");
 
         assertTrue(result); // Check if method returns true
     }
@@ -122,7 +122,7 @@ public class SessionInfoServiceTests {
         when(sessionInfoRepository.save(sessionInfo)).thenReturn(sessionInfo);
 
         // Call method
-        Boolean result = sessionInfoService.createSession(userId, token);
+        Boolean result = sessionInfoService.createSession(userId, token,"");
 
         assertTrue(result); // Check if method returns true
     }
@@ -134,7 +134,7 @@ public class SessionInfoServiceTests {
         String token = null; // Invalid token
 
         // Call method
-        Boolean result = sessionInfoService.createSession(userId, token);
+        Boolean result = sessionInfoService.createSession(userId, token,"");
 
         assertTrue(result);
     }

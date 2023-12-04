@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
@@ -67,6 +68,12 @@ public class UserController {
     public ResponseEntity<Boolean> deleteUser(@PathVariable Long id){
         Boolean isUserDeleted = userService.deleteUser(id);
         return ResponseEntity.ok().body(isUserDeleted);
+    }
+
+    @GetMapping("/getEnrolledStudents/{courseId}")
+    public ResponseEntity<List<UserDTO>> getEnrolledStudents(@PathVariable @NotNull Long courseId){
+        List<UserDTO> students = userService.getEnrolledStudents(courseId);
+        return ResponseEntity.ok().body(students);
     }
 }
 

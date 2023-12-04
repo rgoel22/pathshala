@@ -23,6 +23,8 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     @Modifying
     @Query(value = "update user set isActive = '0' where id = :userId", nativeQuery = true)
     int markUserInActive(@Param("userId") Long userId);
+
+    List<UserEntity> findByIdIn(List<Long> id);
 }
 
   

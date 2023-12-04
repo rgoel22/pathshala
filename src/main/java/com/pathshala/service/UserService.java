@@ -173,4 +173,16 @@ public class UserService {
         int noOfRecords = userRepository.markUserInActive(userId);
         return noOfRecords == 1;
     }
+
+    public List<UserDTO> getEnrolledStudents(Long courseId) {
+        List<Long> studentIds = userCourseMappingService.getEnrolledStudentsByCourseId(courseId);
+        List<UserEntity> enrolledStudents = userRepository.findByIdIn(studentIds);
+        List<UserDTO> students = enrolledStudents.stream().map(student -> modelMapper.map(student, UserDTO.class)).collect(Collectors.toList());
+        for (UserDTO student: students) {
+            student.setPassword(null);
+            student.setCourses(null);
+            student.setUserId(null);
+        }
+        return students;
+    }
 }

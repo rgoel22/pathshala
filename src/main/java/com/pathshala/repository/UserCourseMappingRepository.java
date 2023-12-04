@@ -13,4 +13,6 @@ public interface UserCourseMappingRepository extends JpaRepository<UserCourseMap
     Optional<UserCourseMappingEntity> findByUserIdAndCourseId(Long userId, Long courseId);
 
     List<UserCourseMappingEntity> findAllByUserId(Long userId);
+
+    List<UserCourseMappingEntity> findAllByCourseId(Long courseId);
 }

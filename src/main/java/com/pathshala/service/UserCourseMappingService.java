@@ -32,4 +32,10 @@ public class UserCourseMappingService {
         List<Long> courseIds = enrolledCourses.stream().map(UserCourseMappingEntity::getCourseId).collect(Collectors.toList());
         return courseService.getCourses(courseIds);
     }
+
+    public List<Long> getEnrolledStudentsByCourseId(Long courseId) {
+        return userCourseMappingRepository.findAllByCourseId(courseId)
+                .stream().map(UserCourseMappingEntity::getUserId)
+                .collect(Collectors.toList());
+    }
 }

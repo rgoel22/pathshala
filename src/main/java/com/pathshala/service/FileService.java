@@ -3,6 +3,8 @@ package com.pathshala.service;
 import com.pathshala.config.PropertyConfig;
 import com.pathshala.exception.BaseRuntimeException;
 import lombok.AllArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,6 +30,15 @@ public class FileService {
 //            FileCopyUtils.copy(file.getBytes(), filePath, StandardCopyOption.REPLACE_EXISTING);
             return filePath.toString();
         } catch(Exception e) {
+            throw new BaseRuntimeException("","");
+        }
+    }
+
+    public Resource downloadFile(String path) {
+        try{
+            Path filePath = Paths.get(path);
+            return new UrlResource(filePath.toUri());
+        } catch (Exception e){
             throw new BaseRuntimeException("","");
         }
     }

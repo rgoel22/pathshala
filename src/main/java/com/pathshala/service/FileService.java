@@ -11,13 +11,15 @@ import org.springframework.web.multipart.MultipartFile;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
 @Service
 @AllArgsConstructor
 public class FileService {
 
     private PropertyConfig config;
-    public String uploadFile(MultipartFile file) {
+    private CourseService courseService;
+    public String uploadFile(MultipartFile file, Long courseId) {
         String uploadPath = config.getPropertyByName("filePath");
         try{
             Path uploadFile = Paths.get(uploadPath);
@@ -26,8 +28,8 @@ public class FileService {
             }
             String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
             Path filePath = Paths.get(uploadPath + fileName);
-            Files.copy(file.getInputStream(), filePath);
-//            FileCopyUtils.copy(file.getBytes(), filePath, StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+            courseService.updateFilePath(courseId, filePath.toString());
             return filePath.toString();
         } catch(Exception e) {
             throw new BaseRuntimeException("","");

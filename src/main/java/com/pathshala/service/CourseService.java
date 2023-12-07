@@ -86,4 +86,10 @@ public class CourseService {
         int noOfRecords = courseRepository.markCourseInActive(courseId);
         return noOfRecords == 1;
     }
+
+    public void updateFilePath(Long courseId, String filePath) {
+        CourseEntity course = findEntityById(courseId);
+        course.setFilePath(filePath);
+        courseRepository.save(course);
+    }
 }

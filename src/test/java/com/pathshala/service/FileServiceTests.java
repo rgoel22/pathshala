@@ -30,9 +30,11 @@ public class FileServiceTests {
 
     @Mock
     private PropertyConfig config;
+    @Mock
+    private CourseService courseService;
     @BeforeEach
     void init(){
-        fileService = new FileService(config);
+        fileService = new FileService(config, courseService);
     }
 
     @Test
@@ -44,7 +46,7 @@ public class FileServiceTests {
         byte[] content = "Hello, this is a test file content".getBytes();
         MockMultipartFile mockMultipartFile = new MockMultipartFile("file", originalFilename, "text/plain", content);
 
-        String result = fileService.uploadFile(mockMultipartFile);
+        String result = fileService.uploadFile(mockMultipartFile, 0L);
 
         assertNotNull(result);
     }
@@ -56,7 +58,7 @@ public class FileServiceTests {
         MockMultipartFile mockMultipartFile = new MockMultipartFile("file", "testFile.txt", "text/plain", "Some Content".getBytes());
 
         BaseRuntimeException exception = assertThrows(BaseRuntimeException.class, () -> {
-            fileService .uploadFile(mockMultipartFile);
+            fileService .uploadFile(mockMultipartFile, 0L);
         });
 
         assertEquals("", exception.getErrorCode()); // Replace "" with the expected error code

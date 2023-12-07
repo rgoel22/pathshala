@@ -28,6 +28,7 @@ public class CourseEntity extends MetaData {
     private String syllabus;
     private Long userId;
     private Boolean isCoursePublished;
+    private String filePath;
     private Boolean isActive;
 
     @Override

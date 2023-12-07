@@ -109,17 +109,17 @@ public class CourseServiceTests {
 
     private List<CourseEntity> courseEntityList(){
         List<CourseEntity> courseEntities = new ArrayList<>();
-        courseEntities.add(new CourseEntity(1L, "test", "test101", "desc", "testSyllabus", 1L,true,true));
-        courseEntities.add(new CourseEntity(2L, "test2", "test102", "desc2", "testSyllabus2", 2L,true,true));
+        courseEntities.add(new CourseEntity(1L, "test", "test101", "desc", "testSyllabus", 1L,true,"",true));
+        courseEntities.add(new CourseEntity(2L, "test2", "test102", "desc2", "testSyllabus2", 2L,true,"",true));
         return courseEntities;
     }
 
     private CourseEntity courseEntity(Long id){
-        return new CourseEntity(id, "test", "test101", "desc", "testSyllabus", 1L,true,true);
+        return new CourseEntity(id, "test", "test101", "desc", "testSyllabus", 1L,true,"",true);
     }
 
     private CourseDTO testCourseDTO() {
-        return new CourseDTO(2L, "TestCourse","test","test","test", 2L, UserType.INSTRUCTOR, "test");
+        return new CourseDTO(2L, "TestCourse","test","test","test", 2L, UserType.INSTRUCTOR, "test","");
     }
 
 

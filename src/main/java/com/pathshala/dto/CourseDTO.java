@@ -32,4 +32,5 @@ public class CourseDTO {
     private Long userId;
     private UserType userType;
     private String instructorName;
+    private String filePath;
 }

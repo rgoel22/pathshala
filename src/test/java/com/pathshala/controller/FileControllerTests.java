@@ -44,10 +44,10 @@ public class FileControllerTests {
         // Mock file and its service
         String testFilePath = "/test/file/path.ext";
         MultipartFile mockFile = new MockMultipartFile("file", "test.txt", "text/plain", "test data".getBytes());
-        when(fileService.uploadFile(mockFile)).thenReturn(testFilePath);
+        when(fileService.uploadFile(mockFile, 0L)).thenReturn(testFilePath);
 
         // Call the method to be tested
-        ResponseEntity<String> response = fileController.uploadFile(mockFile);
+        ResponseEntity<String> response = fileController.uploadFile(mockFile,0L);
 
         // Assert the response
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -59,10 +59,10 @@ public class FileControllerTests {
         // Mock file and its service
         String testFilePath = "/test1/file/path.ext";
         MultipartFile mockFile = new MockMultipartFile("file", "test.txt", "text/plain", "test data".getBytes());
-        when(fileService.uploadFile(mockFile)).thenReturn(testFilePath);
+        when(fileService.uploadFile(mockFile, 0L)).thenReturn(testFilePath);
 
         // Call the method to be tested
-        ResponseEntity<String> response = fileController.uploadFile(mockFile);
+        ResponseEntity<String> response = fileController.uploadFile(mockFile,0L);
 
         // Assert the response
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -74,10 +74,10 @@ public class FileControllerTests {
         // Mock file and its service
         String testFilePath = "/test1/file/path.ext";
         MultipartFile mockFile = new MockMultipartFile("file", "test.txt", "text/plain", "test data".getBytes());
-        when(fileService.uploadFile(mockFile)).thenReturn(testFilePath);
+        when(fileService.uploadFile(mockFile, 0L)).thenReturn(testFilePath);
 
         // Call the method to be tested
-        ResponseEntity<String> response = fileController.uploadFile(mockFile);
+        ResponseEntity<String> response = fileController.uploadFile(mockFile, 0L);
 
         // Assert the response
         assertEquals(HttpStatus.OK, response.getStatusCode());

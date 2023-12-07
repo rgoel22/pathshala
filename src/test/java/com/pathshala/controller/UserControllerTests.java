@@ -158,6 +158,6 @@ public class UserControllerTests {
     }
 
     private List<CourseDTO> courseDTOList(){
-        return List.of(new CourseDTO(1L, "test", "code101", "test", "test", 1L, UserType.INSTRUCTOR, "test"));
+        return List.of(new CourseDTO(1L, "test", "code101", "test", "test", 1L, UserType.INSTRUCTOR, "test",""));
     }
 }

@@ -30,9 +30,9 @@ public class FileController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadFile(@Valid @RequestBody MultipartFile file){
+    public ResponseEntity<String> uploadFile(@Valid @RequestBody MultipartFile file, @RequestParam Long courseId){
         logger.info("Entered uploadFile file service");
-        String filePath = fileService.uploadFile(file);
+        String filePath = fileService.uploadFile(file, courseId);
         logger.info("Exited uploadFile file service");
         return ResponseEntity.ok().body(filePath);
     }

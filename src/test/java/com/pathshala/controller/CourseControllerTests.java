@@ -175,13 +175,13 @@ public class CourseControllerTests {
 
     private List<CourseDTO> testCourseDTOList() {
         List<CourseDTO> courseDTOList = new ArrayList<>();
-        courseDTOList.add(new CourseDTO(1L, "TestCourse","test","test","test", 1L, UserType.INSTRUCTOR, "test"));
-        courseDTOList.add(new CourseDTO(2L, "TestCourse","test","test","test", 2L, UserType.INSTRUCTOR, "test"));
+        courseDTOList.add(new CourseDTO(1L, "TestCourse","test","test","test", 1L, UserType.INSTRUCTOR, "test",""));
+        courseDTOList.add(new CourseDTO(2L, "TestCourse","test","test","test", 2L, UserType.INSTRUCTOR, "test",""));
         return courseDTOList;
     }
 
     private CourseDTO testCourseDTO(Long id) {
-        return new CourseDTO(id, "TestCourse","test","test","test", 2L, UserType.INSTRUCTOR, "test");
+        return new CourseDTO(id, "TestCourse","test","test","test", 2L, UserType.INSTRUCTOR, "test","");
     }
 }
 

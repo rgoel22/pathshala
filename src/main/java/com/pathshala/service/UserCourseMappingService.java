@@ -25,7 +25,9 @@ public class UserCourseMappingService {
         if(optionalUserCourseMapping.isPresent()){
             throw new GenericExceptions(ErrorCodes.USER_COURSE_PRESENT, "User already enrolled in Course");
         }
-        return "Successfully enrolled";
+        UserCourseMappingEntity mappingEntity = UserCourseMappingEntity.builder().courseId(courseId).userId(userId).build();
+        userCourseMappingRepository.save(mappingEntity);
+    return "Successfully enrolled";
     }
 
     public List<CourseDTO> enrolledStudentCourses(Long userId){

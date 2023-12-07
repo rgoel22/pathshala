@@ -101,7 +101,7 @@ public class CourseServiceTests {
 
     @Test
     void testInstructorCourse(){
-        Mockito.when(courseRepository.findByUserId(Mockito.any())).thenReturn(List.of(courseEntity(1L)));
+        Mockito.when(courseRepository.findByUserIdAndIsActiveTrue(Mockito.any())).thenReturn(List.of(courseEntity(1L)));
         List<CourseDTO> courseDTOList = courseService.instructorCourse(1L);
         Assertions.assertEquals(courseDTOList.size(), 1);
 
@@ -109,13 +109,13 @@ public class CourseServiceTests {
 
     private List<CourseEntity> courseEntityList(){
         List<CourseEntity> courseEntities = new ArrayList<>();
-        courseEntities.add(new CourseEntity(1L, "test", "test101", "desc", "testSyllabus", 1L));
-        courseEntities.add(new CourseEntity(2L, "test2", "test102", "desc2", "testSyllabus2", 2L));
+        courseEntities.add(new CourseEntity(1L, "test", "test101", "desc", "testSyllabus", 1L,true,true));
+        courseEntities.add(new CourseEntity(2L, "test2", "test102", "desc2", "testSyllabus2", 2L,true,true));
         return courseEntities;
     }
 
     private CourseEntity courseEntity(Long id){
-        return new CourseEntity(id, "test", "test101", "desc", "testSyllabus", 1L);
+        return new CourseEntity(id, "test", "test101", "desc", "testSyllabus", 1L,true,true);
     }
 
     private CourseDTO testCourseDTO() {

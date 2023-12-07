@@ -10,6 +10,7 @@ import com.pathshala.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +24,7 @@ public class CourseService {
     private ModelMapper modelMapper;
     private UserRepository userRepository;
     public List<CourseDTO> findAll(){
-        List<CourseEntity> courseEntities = courseRepository.findAll();
+        List<CourseEntity> courseEntities = courseRepository.findAllByIsActiveTrue();
         List<CourseDTO> courseDTOS = courseEntities.stream().map(course -> modelMapper.map(course, CourseDTO.class))
                 .collect(Collectors.toList());
         for(CourseDTO course: courseDTOS){
@@ -41,8 +42,12 @@ public class CourseService {
         CourseEntity course = new CourseEntity();
         if (courseDTO.getId() != null){
             course = findEntityById(courseDTO.getId());
+            course.setIsCoursePublished(true);
+        } else{
+            course.setIsCoursePublished(false);
         }
         modelMapper.map(courseDTO, course);
+        course.setIsActive(true);
         CourseEntity savedCourse = courseRepository.save(course);
         return modelMapper.map(savedCourse, CourseDTO.class);
     }
@@ -54,7 +59,7 @@ public class CourseService {
 
 
     private CourseEntity findEntityById(Long id) {
-        Optional<CourseEntity> course = courseRepository.findById(id);
+        Optional<CourseEntity> course = courseRepository.findByIdAndIsActiveTrue(id);
         if (course.isEmpty()){
             throw new NotFoundException(ErrorCodes.COURSE_NOT_FOUND, "Course not found!");
         }
@@ -67,8 +72,18 @@ public class CourseService {
     }
 
     public List<CourseDTO> instructorCourse(Long userId) {
-        List<CourseEntity> courses = courseRepository.findByUserId(userId);
+        List<CourseEntity> courses = courseRepository.findByUserIdAndIsActiveTrue(userId);
         return courses.stream().map(course -> modelMapper.map(course, CourseDTO.class)).collect(Collectors.toList());
     }
 
+    public List<CourseDTO> getPublishedCourses() {
+        List<CourseEntity> publishedCourses = courseRepository.findByIsCoursePublishedTrue();
+        return publishedCourses.stream().map(course -> modelMapper.map(course, CourseDTO.class)).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public Boolean deleteCourse(Long courseId) {
+        int noOfRecords = courseRepository.markCourseInActive(courseId);
+        return noOfRecords == 1;
+    }
 }

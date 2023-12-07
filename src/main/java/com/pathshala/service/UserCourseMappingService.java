@@ -1,5 +1,6 @@
 package com.pathshala.service;
 
+import com.pathshala.dao.CourseEntity;
 import com.pathshala.dao.UserCourseMappingEntity;
 import com.pathshala.dto.CourseDTO;
 import com.pathshala.exception.ErrorCodes;
@@ -8,6 +9,7 @@ import com.pathshala.repository.UserCourseMappingRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -38,4 +40,18 @@ public class UserCourseMappingService {
                 .stream().map(UserCourseMappingEntity::getUserId)
                 .collect(Collectors.toList());
     }
+
+    public List<CourseDTO> getUnEnrolledCourses(Long userId) {
+        List<CourseDTO> allCourses = courseService.findAll();
+        List<CourseDTO> unEnrolledCourses = new ArrayList<>();
+        List<Long> enrolledCourses = enrolledStudentCourses(userId).stream().map(CourseDTO::getId).collect(Collectors.toList());
+        for (CourseDTO course: allCourses) {
+            if(!enrolledCourses.contains(course.getId())){
+                unEnrolledCourses.add(course);
+            }
+        }
+        return unEnrolledCourses;
+    }
+
+
 }

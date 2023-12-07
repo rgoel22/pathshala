@@ -23,12 +23,12 @@ public class CourseEntity extends MetaData {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-   // @Column(name = "courseCode")
     private String courseCode;
     private String description;
     private String syllabus;
-    //@Column(name = "userId")
     private Long userId;
+    private Boolean isCoursePublished;
+    private Boolean isActive;
 
     @Override
     public boolean equals(Object o) {

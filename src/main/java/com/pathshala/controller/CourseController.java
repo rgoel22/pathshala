@@ -5,6 +5,8 @@ import com.pathshala.security.TokenService;
 import com.pathshala.service.CourseService;
 import com.pathshala.service.UserCourseMappingService;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,41 +24,55 @@ import java.util.List;
 @RequestMapping("/courses")
 @AllArgsConstructor
 public class CourseController {
+
+    private final Logger logger = LoggerFactory.getLogger(CourseController.class);
     private CourseService courseService;
     private TokenService token;
     private UserCourseMappingService userCourseMappingService;
     @GetMapping
     public ResponseEntity<List<CourseDTO>> findAll(){
+        logger.info("Call findAllCourses API");
         List<CourseDTO> courseDTOList = courseService.findAll();
+        logger.info("Exit findAllCourses API");
         return ResponseEntity.ok().body(courseDTOList);
     }
 
     @PostMapping
     public ResponseEntity<CourseDTO> saveOrUpdate(@RequestBody @Valid CourseDTO course) {
+        logger.info("Entered saveOrUpdate course service");
         CourseDTO savedCourse = courseService.saveOrUpdate(course);
+        logger.info("Exited saveOrUpdate course service");
         return ResponseEntity.ok().body(savedCourse);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<CourseDTO> findById(@PathVariable @NotNull Long id){
+        logger.info("Entered findById course service");
         CourseDTO courseDTO = courseService.findById(id);
+        logger.info("Exited findById course service");
         return ResponseEntity.ok().body(courseDTO);
     }
 
     @GetMapping("/enroll/{userId}/{courseId}")
     public ResponseEntity<String> enrollUserInCourse(@PathVariable @NotNull Long userId, @PathVariable @NotNull Long courseId){
+        logger.info("Entered enrollUserInCourse course service");
         String response = userCourseMappingService.enrollUserInCourse(userId, courseId);
+        logger.info("Exited enrollUserInCourse course service");
         return ResponseEntity.ok().body(response);
     }
 
     @GetMapping("/instructor")
     public ResponseEntity<List<CourseDTO>> instructorCourse(@RequestParam @NotNull Long userId) {
+        logger.info("Entered instructorCourse course service");
         List<CourseDTO> courseDTOS = courseService.instructorCourse(userId);
+        logger.info("Exited instructorCourse course service");
         return ResponseEntity.ok().body(courseDTOS);
     }
     @GetMapping("/student")
     public ResponseEntity<List<CourseDTO>> studentCourse(@RequestParam @NotNull Long userId) {
+        logger.info("Entered studentCourse course service");
         List<CourseDTO> courseDTOS = userCourseMappingService.enrolledStudentCourses(userId);
+        logger.info("Exited studentCourse course service");
         return ResponseEntity.ok().body(courseDTOS);
     }
 

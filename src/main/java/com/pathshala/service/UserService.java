@@ -1,6 +1,5 @@
 package com.pathshala.service;
 
-import com.pathshala.controller.UserController;
 import com.pathshala.dao.UserEntity;
 import com.pathshala.dto.CourseDTO;
 import com.pathshala.dto.LoginRequestDTO;
@@ -61,7 +60,7 @@ public class UserService {
         // encrypt the password using hashing
         try{
             String randomPassword = "";
-            if(user.getPassword() == null){
+            if(userDTO.getPassword() == null){
                 randomPassword = PasswordGenerateUtil.generateRandomPassword(5);
                 userDTO.setPassword(randomPassword);
             }

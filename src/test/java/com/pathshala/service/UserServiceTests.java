@@ -77,11 +77,12 @@ public class UserServiceTests {
     }
 
     @Test
-    public void saveUserData_PasswordMismatch_ThrowsGenericExceptions() {
+    public void saveUserData_PasswordMismatch_andMissingEmailThrowsGenericExceptions() {
         UserDTO userDTO = new UserDTO();
         userDTO.setUserId("someUserId");
         userDTO.setPassword("password1");
-        userDTO.setRePassword("password2"); // Setting different passwords intentionally
+        userDTO.setUserType(UserType.INSTRUCTOR);
+        userDTO.setRePassword("password2");// Setting different passwords intentionally
 
         // Assertion
         assertThrows(GenericExceptions.class, () -> userService.saveUserData(userDTO));
@@ -91,6 +92,7 @@ public class UserServiceTests {
     public void saveUserData_EmailIdIsNull_ThrowsGenericExceptions() {
         UserDTO userDTO = new UserDTO();
         userDTO.setUserId("someUserId");
+        userDTO.setUserType(UserType.INSTRUCTOR);
         userDTO.setPassword("password");
         userDTO.setRePassword("password");
         userDTO.setEmailId(null); // Setting emailId as null intentionally
@@ -104,6 +106,7 @@ public class UserServiceTests {
         UserDTO userDTO = new UserDTO();
         userDTO.setUserId("someUserId");
         userDTO.setPassword("password");
+        userDTO.setUserType(UserType.ADMIN);
         userDTO.setRePassword("password");
         userDTO.setEmailId("test@example.com");
 

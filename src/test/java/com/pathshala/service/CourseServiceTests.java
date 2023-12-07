@@ -49,7 +49,7 @@ public class CourseServiceTests {
 
     @Test
     void testFindAll(){
-        when(courseRepository.findAll()).thenReturn(courseEntityList());
+        when(courseRepository.findAllByIsActiveTrue()).thenReturn(courseEntityList());
         List<CourseDTO> courseDTOList = courseService.findAll();
         assertEquals(courseDTOList.size(), 2);
         assertEquals(courseDTOList.get(0).getId(), 1L);
@@ -57,7 +57,7 @@ public class CourseServiceTests {
 
     @Test
     void testFindAll2(){
-        when(courseRepository.findAll()).thenReturn(courseEntityList());
+        when(courseRepository.findAllByIsActiveTrue()).thenReturn(courseEntityList());
         List<CourseDTO> courseDTOList = courseService.findAll();
         assertEquals(courseDTOList.size(), 2);
         assertEquals(courseDTOList.get(1).getId(), 2L);
@@ -65,7 +65,7 @@ public class CourseServiceTests {
 
     @Test
     void testSaveOrUpdate(){
-        when(courseRepository.findById(Mockito.any())).thenReturn(Optional.of(courseEntity(1L)));
+        when(courseRepository.findByIdAndIsActiveTrue(Mockito.any())).thenReturn(Optional.of(courseEntity(1L)));
         when(courseRepository.save(Mockito.any())).thenReturn(courseEntity(1L));
         CourseDTO savedCourse = courseService.saveOrUpdate(testCourseDTO());
         assertEquals(savedCourse.getId(), 1L);
@@ -73,7 +73,7 @@ public class CourseServiceTests {
 
     @Test
     void testFindById(){
-        when(courseRepository.findById(Mockito.any())).thenReturn(Optional.of(courseEntity(1L)));
+        when(courseRepository.findByIdAndIsActiveTrue(Mockito.any())).thenReturn(Optional.of(courseEntity(1L)));
         CourseDTO course = courseService.findById(1L);
         assertEquals(course.getId(), 1L);
     }

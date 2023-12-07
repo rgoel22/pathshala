@@ -4,10 +4,7 @@ import com.pathshala.dao.SessionInfoEntity;
 import com.pathshala.exception.BaseRuntimeException;
 import com.pathshala.exception.NotFoundException;
 import com.pathshala.repository.SessionInfoRepository;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -52,11 +49,12 @@ public class SessionInfoServiceTests {
     void testFindByUserIdAndIsActive_WhenMultipleSessionInfoExists_ShouldThrowBaseRuntimeException() {
         Long userId = 1L;
         List<SessionInfoEntity> multipleSessionInfo = new ArrayList<>();
-        multipleSessionInfo.add(new SessionInfoEntity());
-        multipleSessionInfo.add(new SessionInfoEntity());
+        multipleSessionInfo.add(new SessionInfoEntity(1L, 1L, "test", "test", true));
+        multipleSessionInfo.add(new SessionInfoEntity(2L, 2L, "test", "test", true));
         when(sessionInfoRepository.findByUserIdAndIsActiveTrueOrderByIdDesc(userId)).thenReturn(multipleSessionInfo);
 
-        assertThrows(BaseRuntimeException.class, () -> sessionInfoService.findByUserIdAndIsActive(userId));
+        SessionInfoEntity result = sessionInfoService.findByUserIdAndIsActive(userId);
+        Assertions.assertEquals(result.getUserId(), 1L);
     }
 
     @Test

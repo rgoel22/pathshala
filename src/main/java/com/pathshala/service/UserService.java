@@ -1,5 +1,6 @@
 package com.pathshala.service;
 
+import com.pathshala.controller.UserController;
 import com.pathshala.dao.UserEntity;
 import com.pathshala.dto.CourseDTO;
 import com.pathshala.dto.LoginRequestDTO;
@@ -15,6 +16,8 @@ import com.pathshala.security.TokenService;
 import com.pathshala.util.EncryptionUtility;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +32,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class UserService {
 
+    private final Logger logger = LoggerFactory.getLogger(UserService.class);
     private UserRepository userRepository;
     private TokenService tokenService;
     private SessionInfoService sessionInfoService;
@@ -37,6 +41,7 @@ public class UserService {
     private CourseService courseService;
 
     public Boolean saveUserData(UserDTO userDTO) {
+        logger.info("Entered saveUserData service");
         UserEntity user = new UserEntity();
         //check if user is already present using the userId
         Optional<UserEntity> userEntityOptional = userRepository.findByUserIdAndIsActiveTrue(userDTO.getUserId());
@@ -61,11 +66,13 @@ public class UserService {
         } catch (Exception e){
             throw new GenericExceptions(ErrorCodes.DATA_NOT_SAVED, "User data not saved. Please try again!");
         }
+        logger.info("Exited saveUserData service");
         //map object to database entity
         return true;
     }
 
     public LoginRequestDTO login(LoginRequestDTO payload) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+        logger.info("Entered login service");
         String hashedPassword = EncryptionUtility.makeSHA1Hash(payload.getPassword());
         Optional<UserEntity> optionalUser = userRepository.findByUserIdAndPasswordAndIsActiveTrue(payload.getUserId(), hashedPassword);
         if(optionalUser.isEmpty()){
@@ -82,10 +89,12 @@ public class UserService {
             } else if(user.getUserType().equals(UserType.ADMIN)) {
                 validUser = getAdminDetails(user.getId());
             }
+            logger.info("Entered login service");
             return LoginRequestDTO.builder().userId(user.getId().toString())
                     .userType(user.getUserType().toString())
                     .token(token).userDetails(validUser).build();
         }
+        logger.info("Exception in login service");
         throw new BaseRuntimeException("","");
     }
 
@@ -97,6 +106,7 @@ public class UserService {
     }
 
     private UserDTO getInstructorDetails(Long userId) {
+        logger.info("Entered getInstructorDetails service");
         UserEntity user = this.findEntityById(userId);
         List<CourseDTO> courses = courseService.instructorCourse(userId);
         for(CourseDTO course: courses){
@@ -106,6 +116,7 @@ public class UserService {
         UserDTO userDTO = modelMapper.map(user, UserDTO.class);
         userDTO.setPassword(null);
         userDTO.setCourses(courses);
+        logger.info("Exited getInstructorDetails service");
         return userDTO;
     }
 
@@ -115,6 +126,7 @@ public class UserService {
     }
 
     public UserDTO getStudentDetails(Long userId){
+        logger.info("Entered getStudentDetails service");
         UserEntity user = this.findEntityById(userId);
         List<CourseDTO> courses = userCourseMappingService.enrolledStudentCourses(userId);
         for(CourseDTO course: courses){
@@ -124,14 +136,17 @@ public class UserService {
         UserDTO userDTO = modelMapper.map(user, UserDTO.class);
         userDTO.setPassword(null);
         userDTO.setCourses(courses);
+        logger.info("Exited getStudentDetails service");
         return userDTO;
     }
 
     private UserEntity findEntityById(Long id) {
+        logger.info("Entered findEntityById service");
         Optional<UserEntity> user = userRepository.findById(id);
         if (user.isEmpty()){
             throw new NotFoundException(ErrorCodes.USER_NOT_FOUND, "User not found!");
         }
+        logger.info("Exited findEntityById service");
         return user.get();
     }
 
@@ -151,6 +166,7 @@ public class UserService {
     }
 
     public UserDTO updateUser(UserDTO payload) {
+        logger.info("Entered updateUser service");
         UserEntity savedUser = findEntityById(payload.getId());
         payload.setPassword(savedUser.getPassword());
         payload.setUserType(savedUser.getUserType());
@@ -161,6 +177,7 @@ public class UserService {
         userDTO.setPassword(null);
         userDTO.setCourses(null);
         userDTO.setUserType(null);
+        logger.info("Exited updateUser service");
         return userDTO;
     }
 
@@ -170,7 +187,9 @@ public class UserService {
 
     @Transactional
     public Boolean deleteUser(Long userId) {
+        logger.info("Entered deleteUser service");
         int noOfRecords = userRepository.markUserInActive(userId);
+        logger.info("Exited deleteUser service");
         return noOfRecords == 1;
     }
 

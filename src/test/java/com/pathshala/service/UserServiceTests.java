@@ -8,7 +8,11 @@ import com.pathshala.exception.GenericExceptions;
 import com.pathshala.exception.RecordExistsException;
 import com.pathshala.repository.UserRepository;
 import com.pathshala.security.TokenService;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -33,10 +37,13 @@ public class UserServiceTests {
 
     private UserService userService;
 
+
     @Mock
     private UserRepository userRepository;
     @Mock
     private TokenService tokenService;
+    @Mock
+    private EmailService emailService;
     @Mock
     private SessionInfoService sessionInfoService;
     @Spy
@@ -49,7 +56,7 @@ public class UserServiceTests {
 
     @BeforeEach
     void setup(){
-        userService = new UserService(userRepository, tokenService, sessionInfoService, modelMapper, userCourseMappingService, courseService);
+        userService = new UserService(userRepository, tokenService, sessionInfoService, modelMapper, userCourseMappingService, courseService, emailService);
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
     }
 

@@ -14,6 +14,7 @@ import com.pathshala.exception.RecordExistsException;
 import com.pathshala.repository.UserRepository;
 import com.pathshala.security.TokenService;
 import com.pathshala.util.EncryptionUtility;
+import com.pathshala.util.PasswordGenerateUtil;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -39,6 +40,7 @@ public class UserService {
     private final ModelMapper modelMapper;
     private UserCourseMappingService userCourseMappingService;
     private CourseService courseService;
+    private EmailService emailService;
 
     public Boolean saveUserData(UserDTO userDTO) {
         logger.info("Entered saveUserData service");
@@ -49,7 +51,7 @@ public class UserService {
             throw new RecordExistsException(ErrorCodes.USER_ALREADY_PRESENT, "UserId not available!");
         }
         // check if passwords match
-        if(!userDTO.getPassword().equals(userDTO.getRePassword())){
+        if(!userDTO.getUserType().equals(UserType.INSTRUCTOR) && !userDTO.getPassword().equals(userDTO.getRePassword())){
             throw new GenericExceptions(ErrorCodes.PASSWORD_MISMATCH, "Passwords do not Match");
         }
         //emailId should not be empty
@@ -58,11 +60,19 @@ public class UserService {
         }
         // encrypt the password using hashing
         try{
+            String randomPassword = "";
+            if(user.getPassword() == null){
+                randomPassword = PasswordGenerateUtil.generateRandomPassword(5);
+                userDTO.setPassword(randomPassword);
+            }
             String hashedPassword = EncryptionUtility.makeSHA1Hash(userDTO.getPassword());
             userDTO.setPassword(hashedPassword);
             modelMapper.map(userDTO, user);
             user.setIsActive(true);
             userRepository.save(user);
+            if (userDTO.getUserType().equals(UserType.INSTRUCTOR)){
+                emailService.sendEmail(userDTO.getEmailId(), user.getFirstName() + " " + userDTO.getLastName(), randomPassword);
+            }
         } catch (Exception e){
             throw new GenericExceptions(ErrorCodes.DATA_NOT_SAVED, "User data not saved. Please try again!");
         }

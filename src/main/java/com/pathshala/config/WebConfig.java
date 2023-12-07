@@ -13,12 +13,4 @@ public class WebConfig {
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         return mapper;
     }
-
-//    @Bean
-//    public FilterRegistrationBean<CorsFilter> corsFilter() {
-//        FilterRegistrationBean<CorsFilter> registrationBean = new FilterRegistrationBean<>();
-//        registrationBean.setFilter(new CorsFilter);
-//        registrationBean.addUrlPatterns("/*"); // Apply the filter to all URLs
-//        return registrationBean;
-//    }
 }

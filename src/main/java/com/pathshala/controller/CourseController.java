@@ -54,8 +54,8 @@ public class CourseController {
         return ResponseEntity.ok().body(courseDTO);
     }
 
-    @GetMapping("/enroll/{userId}/{courseId}")
-    public ResponseEntity<String> enrollUserInCourse(@PathVariable @NotNull Long userId, @PathVariable @NotNull Long courseId){
+    @GetMapping("/enroll")
+    public ResponseEntity<String> enrollUserInCourse(@RequestParam @NotNull Long userId, @RequestParam @NotNull Long courseId){
         logger.info("Entered enrollUserInCourse course service");
         String response = userCourseMappingService.enrollUserInCourse(userId, courseId);
         logger.info("Exited enrollUserInCourse course service");

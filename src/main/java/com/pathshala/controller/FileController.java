@@ -42,7 +42,7 @@ public class FileController {
         logger.info("Entered downloadFile file service");
         Resource resource = fileService.downloadFile(path);
         String contentType = "application/octet-stream";
-        String headerValue = "attachment; filename=\"" + resource.getFilename() + "\"";
+        String headerValue = "attachment; filename=\"" + resource.getFilename() + "\".pdf";
         logger.info("Exited downloadFile file service");
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(contentType))

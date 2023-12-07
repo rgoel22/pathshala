@@ -1,7 +1,6 @@
 package com.pathshala.controller;
 
 import com.pathshala.dto.CourseDTO;
-import com.pathshala.security.TokenService;
 import com.pathshala.service.CourseService;
 import com.pathshala.service.UserCourseMappingService;
 import lombok.AllArgsConstructor;
@@ -28,7 +27,6 @@ public class CourseController {
 
     private final Logger logger = LoggerFactory.getLogger(CourseController.class);
     private CourseService courseService;
-    private TokenService token;
     private UserCourseMappingService userCourseMappingService;
     @GetMapping
     public ResponseEntity<List<CourseDTO>> findAll(){
@@ -83,11 +81,6 @@ public class CourseController {
         return ResponseEntity.ok().body(courseDTOS);
     }
 
-    @GetMapping("/getPublishedCourses")
-    public ResponseEntity<List<CourseDTO>> getPublishedCourses() {
-        List<CourseDTO> courseDTOS = courseService.getPublishedCourses();
-        return ResponseEntity.ok().body(courseDTOS);
-    }
 
     @DeleteMapping("/deleteCourse/{id}")
     public ResponseEntity<Boolean> deleteCourse(@PathVariable Long id){

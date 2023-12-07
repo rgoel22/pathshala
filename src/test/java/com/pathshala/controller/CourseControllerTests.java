@@ -2,7 +2,6 @@ package com.pathshala.controller;
 
 import com.pathshala.dto.CourseDTO;
 import com.pathshala.enums.UserType;
-import com.pathshala.security.TokenService;
 import com.pathshala.service.CourseService;
 import com.pathshala.service.UserCourseMappingService;
 import org.junit.jupiter.api.AfterEach;
@@ -33,14 +32,11 @@ public class CourseControllerTests {
     private CourseService courseService;
 
     @Mock
-    private TokenService tokenService;
-
-    @Mock
     private UserCourseMappingService userCourseMappingService;
 
     @BeforeEach
     void setup() {
-        courseController = new CourseController(courseService, tokenService, userCourseMappingService);
+        courseController = new CourseController(courseService, userCourseMappingService);
     }
 
     @AfterEach

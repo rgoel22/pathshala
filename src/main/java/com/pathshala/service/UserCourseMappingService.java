@@ -1,6 +1,5 @@
 package com.pathshala.service;
 
-import com.pathshala.dao.CourseEntity;
 import com.pathshala.dao.UserCourseMappingEntity;
 import com.pathshala.dto.CourseDTO;
 import com.pathshala.exception.ErrorCodes;
@@ -42,7 +41,7 @@ public class UserCourseMappingService {
     }
 
     public List<CourseDTO> getUnEnrolledCourses(Long userId) {
-        List<CourseDTO> allCourses = courseService.findAll();
+        List<CourseDTO> allCourses = courseService.getPublishedCourses();
         List<CourseDTO> unEnrolledCourses = new ArrayList<>();
         List<Long> enrolledCourses = enrolledStudentCourses(userId).stream().map(CourseDTO::getId).collect(Collectors.toList());
         for (CourseDTO course: allCourses) {

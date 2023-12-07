@@ -77,14 +77,18 @@ public class CourseController {
 
     @GetMapping("/getUnEnrolledCourses")
     public ResponseEntity<List<CourseDTO>> getUnEnrolledCourses(@RequestParam @NotNull Long userId) {
+        logger.info("Entered getUnEnrolledCourses service");
         List<CourseDTO> courseDTOS = userCourseMappingService.getUnEnrolledCourses(userId);
+        logger.info("Exited getUnEnrolledCourses service");
         return ResponseEntity.ok().body(courseDTOS);
     }
 
 
     @DeleteMapping("/deleteCourse/{id}")
     public ResponseEntity<Boolean> deleteCourse(@PathVariable Long id){
+        logger.info("Entered deleteCourse service");
         Boolean isCourseDeleted = courseService.deleteCourse(id);
+        logger.info("Exited deleteCourse service");
         return ResponseEntity.ok().body(isCourseDeleted);
     }
 }
